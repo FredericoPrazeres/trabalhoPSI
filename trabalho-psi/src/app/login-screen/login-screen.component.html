@@ -1,0 +1,12 @@
+<h1>
+    LOGIN SCREEN
+</h1>
+
+<div class="login">
+    <input type="text" placeholder="Username" id="username" #UserName>  
+  <input type="password" placeholder="password" id="password" #PassWord>  
+  <input type="submit" value="Log In" (click)="login(UserName.value,PassWord.value);">
+  <p>{{loginMessage}}</p>
+</div>
+
+<div class="shadow"></div>
