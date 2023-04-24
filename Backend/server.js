@@ -41,36 +41,26 @@ app.get('/user/:name', async (req, res) => {
 });
 
 app.post('/users', async (req, res) => {
+    const existingUser = await User.findOne({ name: req.body.name });
+    if (existingUser) {
+        return res.status(400).json({ error: 'User already exists' });
+    }
 
-    await User.findOne({}).select('name').then(user => {
+    const newUser = new User({
+        name: req.body.name,
+        password: req.body.password,
+    });
 
-        if(user){
-            return;
-        }
-
-        const newUser = new User({
-            name: req.body.name,
-            password: req.body.password,
-            email:req.body.email,
+    newUser.save()
+        .then((user) => {
+            res.json(user);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error: error });
         });
-    
-        newUser.save()
-            .then((user) => {
-                res.json(user);
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(500).json({ error: error });
-            });
-    
-    }).catch(err =>{
-        res.status(501).send(err.message);
-    })
-
-
-    
-
 });
+
 
 
 app.listen(3000, () => console.log(`Express server running on port 3000`));
