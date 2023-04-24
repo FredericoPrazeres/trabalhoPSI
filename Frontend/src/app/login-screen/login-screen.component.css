@@ -104,6 +104,9 @@ h1{
   border-bottom-left-radius:5px;
   margin-left: 40%;
   margin-top: 5%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 p{
     color:red;

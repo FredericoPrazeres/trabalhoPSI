@@ -19,14 +19,14 @@ export class UserService {
   loginUser(user:User):string {
     try {
       const dbUserObservable: Observable<User> = this.http.get<User>(this.serverNodeUrl+`/user/${user.name}`);
-    dbUserObservable.subscribe(dbUser => {
+      dbUserObservable.subscribe(dbUser => {
       if (dbUser && dbUser.password === user.password) {
         // User exists in the database and the password matches
-        this.router.navigate(['/dashboard'])
-        return "Login com sucesso";
+        this.router.navigate(['/dashboard']);
+        return true;
       } else {
         // User doesn't exist in the database or the password is incorrect
-        return "Login sem sucesso";
+        return false;
       }
     });
     } catch (error) {
