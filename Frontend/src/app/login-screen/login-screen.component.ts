@@ -14,6 +14,10 @@ export class LoginScreenComponent {
   constructor(private userService: UserService){}
   
   login(name:string, password:string){
-    this.loginMessage = this.userService.loginUser({name,password} as User);
+    this.userService.loginUser({name,password} as User).subscribe(string=>
+      this.loginMessage=string);
+  }
+  goRegisterScreen(){
+    this.userService.routeHere('/register-screen');
   }
 }

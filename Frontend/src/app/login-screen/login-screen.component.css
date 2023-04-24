@@ -7,24 +7,10 @@ body { background-image: radial-gradient( farthest-corner, rgba(92,100,111,1) 0%
   border: 1px solid #42464b;
   border-radius: 6px;
   height: 257px;
-  margin: 20px auto 0;
+  margin: 0px auto 0;
   width: 298px;
-  margin-top: 13%;
+  margin-top: 8%;
   scale: 1.65;
-}
-.login h1 {
-  background-image: linear-gradient(to left, #f1f3f3, #d4dae0);
-  border-bottom: 1px solid #a6abaf;
-  border-radius: 6px 6px 0 0;
-  box-sizing: border-box;
-  color: #727678;
-  display: block;
-  height: 43px;
-  font: 600 14px/1 'Open Sans', sans-serif;
-  padding-top: 14px;
-  margin: 0;
-  text-align: center;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.2), 0 1px 0 #fff;
 }
 input[type="password"], input[type="text"] {
   border: 1px solid #a1a3a3;
@@ -83,7 +69,6 @@ input[type="submit"]:active {
 h1{
   width:360px;
   height:70px;
-  display:block;
   font-family:Arial, "Helvetica", sans-serif;
   font-size:32px;
   font-weight:bold;
@@ -91,24 +76,40 @@ h1{
   text-decoration:none;
   text-transform:uppercase;
   text-align:center;
+  line-height: 70px;
   padding-top:6px;
   margin: 29px 0 0 29px;
-  position:relative;
-  cursor:pointer;
-  border: none;  
   background-color: #37a69b;
   background-image: linear-gradient(to left,#3db0a6,#3111);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius:5px;
-  margin-left: 40%;
-  margin-top: 5%;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+  border-radius: 5px;
 }
 p{
     color:red;
     text-align: center;
+}
+.button-container{
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top:7rem;
+  overflow-wrap: break-all;
+}
+  
+button {
+  background-color: #eee;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+button:hover{
+  cursor: pointer;
+}
+.header-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

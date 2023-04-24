@@ -51,6 +51,7 @@ app.post('/users', async (req, res) => {
         const newUser = new User({
             name: req.body.name,
             password: req.body.password,
+            email:req.body.email,
         });
     
         newUser.save()
