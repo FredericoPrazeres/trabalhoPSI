@@ -50,7 +50,7 @@ app.get('/user/:name', async (req, res) => {
         if (user) {
             res.json(user);
         } else {
-            res.status(404).send('No hero found with that name');
+            res.status(404).send('No user found with that name');
         }
     }).catch(err => {
         res.status(500).send(err.message);
@@ -68,7 +68,7 @@ app.post('/users', async (req, res) => {
         password: req.body.password,
     });
 
-    newUser.save()
+    await newUser.save()
         .then((user) => {
             res.json(user);
         })
@@ -78,12 +78,23 @@ app.post('/users', async (req, res) => {
         });
 });
 
-app.post('/login', (req, res) => {
+app.get('/session', (req, res) => {
+    const user = req.session.user;
+    if (user) {
+      res.send({message:user.name});
+    } else {
+      res.status(401).send('User not authenticated');
+    }
+  });
+  
+
+app.post('/login', async (req, res) => {
     const { name, password } = req.body;
-    User.findOne({ name, password })
+    await User.findOne({ name, password })
       .then(user => {
         if (user) {
           req.session.user = user;
+          console.log(req.session);
           res.send({message:""});
         } else {
           res.send({message:'Username ou password inválidos'});

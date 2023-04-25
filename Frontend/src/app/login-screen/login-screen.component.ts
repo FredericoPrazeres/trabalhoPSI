@@ -14,11 +14,12 @@ export class LoginScreenComponent {
   constructor(private userService: UserService){}
   
   login(name:string, password:string){
-    console.log(password);
-    this.userService.loginUser(name,password).subscribe(string=>
-      this.loginMessage=string),
+    this.userService.loginUser(name,password).subscribe(string=>{
+      this.loginMessage=string;
+    }),
       (error:any)=>{
         console.log(error);
+        return;
       };
   }
   goRegisterScreen(){

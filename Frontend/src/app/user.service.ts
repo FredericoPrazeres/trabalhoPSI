@@ -13,7 +13,7 @@ export class UserService {
   constructor(private http : HttpClient, private router:Router) { }
   private serverNodeUrl = 'http://localhost:3000';
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
 
@@ -34,7 +34,7 @@ export class UserService {
 
   loginUser(name: string, password: string): Observable<string> {
     const credentials = { name, password };
-    return this.http.post(this.serverNodeUrl+'/login', credentials).pipe(
+    return this.http.post(this.serverNodeUrl+'/login', credentials,this.httpOptions).pipe(
       map((response: any) => {
         const message = response.message; // assuming the server sends the message in the 'message' field
         if (message === "") {
