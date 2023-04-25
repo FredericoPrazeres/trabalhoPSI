@@ -32,29 +32,16 @@ export class UserService {
   
 
 
-  loginUser(user:User):Observable<string> {
-    const dbUserObservable: Observable<User> = this.http.get<User>(this.serverNodeUrl+`/user/${user.name}`);
-    return dbUserObservable.pipe(
-      map(dbUser => {
-        if (dbUser && dbUser.password === user.password) {
-          // User exists in the database and the password matches
+  loginUser(name: string, password: string): Observable<string> {
+    const credentials = { name, password };
+    return this.http.post(this.serverNodeUrl+'/login', credentials).pipe(
+      map((response: any) => {
+        const message = response.message; // assuming the server sends the message in the 'message' field
+        if (message === "Logged in") {
           this.router.navigate(['/dashboard']);
-          return "";
-        } else {
-          // User doesn't exist in the database or the password is incorrect
-          return 'Username ou password inválida!';
+          return message;
         }
-      
-      }),
-       catchError(error => {
-      if (error.status === 404) {
-        // handle 404 error
-        return of('Esse utilizador não existe, registe-se!');
-      } else {
-        // handle other errors
-        return of('An error occurred');
-      }
-    })
+      })
     );
   }
   routeHere(path:string){

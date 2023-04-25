@@ -4,16 +4,33 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./user.model');
 var app = express();
+var session = require('express-session');
+var MongoStore = require('connect-mongo');
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority');
+mongoDbUrl = 'mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority';
+
+mongoose.connect(mongoDbUrl);
 
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('MongoDB database connection established successfully');
+
 });
+
+const store = MongoStore.create({
+    mongoUrl:mongoDbUrl,
+    collectionName:'sessions'
+})
+
+app.use(session({
+  secret: 'Aguadestilada123',
+  resave: false,
+  saveUninitialized: false,
+  store:store
+}));
 
 
 app.get('/users', async (req, res) => {
@@ -60,6 +77,23 @@ app.post('/users', async (req, res) => {
             res.status(500).json({ error: error });
         });
 });
+
+app.post('/login', (req, res) => {
+    const { name, password } = req.body;
+    User.findOne({ name, password })
+      .then(user => {
+        if (user) {
+          req.session.user = user;
+          res.send({message: "Logged in"});
+        } else {
+          res.status(401).send({message:'Invalid username or password'});
+        }
+      })
+      .catch(err => {
+        res.status(500).send(err.message);
+      });
+  });
+  
 
 
 
