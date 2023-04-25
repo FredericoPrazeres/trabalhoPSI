@@ -37,10 +37,11 @@ export class UserService {
     return this.http.post(this.serverNodeUrl+'/login', credentials).pipe(
       map((response: any) => {
         const message = response.message; // assuming the server sends the message in the 'message' field
-        if (message === "Logged in") {
+        if (message === "") {
           this.router.navigate(['/dashboard']);
           return message;
         }
+        return message;
       })
     );
   }

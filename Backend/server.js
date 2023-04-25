@@ -84,9 +84,9 @@ app.post('/login', (req, res) => {
       .then(user => {
         if (user) {
           req.session.user = user;
-          res.send({message: "Logged in"});
+          res.send({message:""});
         } else {
-          res.status(401).send({message:'Invalid username or password'});
+          res.send({message:'Username ou password inválidos'});
         }
       })
       .catch(err => {
