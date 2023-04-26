@@ -3,7 +3,6 @@ body{
 }
 body h1{
     text-align: center;
-    border:solid 3px cyan;
     display: inline-block;
     margin-left: 28rem;
     fill:cyan;
