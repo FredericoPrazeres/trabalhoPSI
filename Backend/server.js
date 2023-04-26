@@ -7,7 +7,7 @@ var app = express();
 var session = require('express-session');
 var MongoStore = require('connect-mongo');
 
-app.use(cors());
+app.use(cors({origin:["http://localhost:4200"],credentials:true}));
 app.use(bodyParser.json());
 
 mongoDbUrl = 'mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority';
@@ -31,6 +31,18 @@ app.use(session({
     saveUninitialized: false,
     store: store
 }));
+
+const validatePayloadMiddleware = (req,res,next) =>{
+    if (req.body){
+        next();
+    }else{
+        res.status(403).send({
+            errorMessage:'You need a payload'
+        });
+    }
+};
+
+
 
 
 app.get('/users', async(req, res) => {
@@ -79,26 +91,18 @@ app.post('/users', async(req, res) => {
         });
 });
 
-app.get('/session', (req, res) => {
-    const user = req.session.user;
-    if (user) {
-        res.send({ message: user.name });
-    } else {
-        res.status(401).send('User not authenticated');
-    }
-});
 
-
-app.post('/login', async(req, res) => {
+app.post('/login',validatePayloadMiddleware, async(req, res) => {
     const { name, password } = req.body;
-    await User.findOne({ name, password })
+    await User.findOne({ name, password }).select('-_id -__v -password')
         .then(user => {
             if (user) {
-                req.session.user = user;
-                console.log(req.session);
-                res.send({ message: "" });
+                const userWithoutPassword={user};
+                delete userWithoutPassword.password;
+                req.session.user=userWithoutPassword;
+                res.send(userWithoutPassword);
             } else {
-                res.send({ message: 'Username ou password inválidos' });
+                res.status(401).send({ errorMessage: 'Username ou password inválidos' });
             }
         })
         .catch(err => {
@@ -106,6 +110,29 @@ app.post('/login', async(req, res) => {
         });
 });
 
+app.get('/login', async (req, res) => {
+    try {
+      if (req.session.user) {
+        // If there is a user in the session, return it
+        res.status(200).send(req.session.user);
+      } else {
+        // If there is no user in the session, return a 401 error
+        res.status(401).send({ errorMessage: 'User not logged in' });
+      }
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  });
+  
+  app.get('/logout', async (req, res) => {
+    req.session.destroy((err) =>{
+        if(err){
+            res.status(500).send('Could not log out');
+        }else{
+            res.send({message:'Logged out'});
+        }
+    });
+  });
 
 
 

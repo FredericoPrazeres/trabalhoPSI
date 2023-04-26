@@ -14,6 +14,10 @@ export class RegisterScreenComponent {
 
   constructor(private userService:UserService){}
 
+  goLogin(){
+    this.userService.routeHere('/login-screen');
+  }
+
   isValidPassword(password: string): boolean {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     return passwordRegex.test(password);
@@ -49,9 +53,6 @@ export class RegisterScreenComponent {
       }
         
       );
-
-    console.log("yes");
-
   }
 }
 

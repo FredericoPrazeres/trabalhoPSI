@@ -12,6 +12,7 @@ export class ItemService {
   private serverNodeUrl = 'http://localhost:3000/items';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    withCredentials:true
   };
 
   getAllItems(): Observable<Item[]> {

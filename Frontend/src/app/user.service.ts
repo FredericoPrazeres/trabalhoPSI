@@ -9,15 +9,11 @@ import {
 import {
   Observable,
   catchError,
-  flatMap,
   map,
   mergeMap,
   of,
-  tap,
-  throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +25,14 @@ export class UserService {
   private serverNodeUrl = 'http://localhost:3000';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    withCredentials:true
   };
+
+
+
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.serverNodeUrl}/login`,this.httpOptions);
+  }
 
   registerUser(user: User): Observable<String> {
     return this.http
@@ -45,21 +48,11 @@ export class UserService {
       );
   }
 
-  loginUser(name: string, password: string): Observable<string> {
-    const credentials = { name, password };
-    return this.http
-      .post(this.serverNodeUrl + '/login', credentials, this.httpOptions)
-      .pipe(
-        map((response: any) => {
-          const message = response.message; // assuming the server sends the message in the 'message' field
-          if (message === '') {
-            this.router.navigate(['/dashboard']);
-            return message;
-          }
-          return message;
-        })
-      );
+  login(name: string, password: string): Observable<User> {
+    const payload = { name, password };
+    return this.http.post<User>(`${this.serverNodeUrl}/login`, payload,this.httpOptions);
   }
+  
   routeHere(path: string) {
     this.router.navigate([path]);
   }
@@ -87,5 +80,9 @@ export class UserService {
       throw error;
     })
     );
+  }
+
+  logout(): Observable<any> {
+    return this.http.get(`${this.serverNodeUrl}/logout`,this.httpOptions);
   }
 }

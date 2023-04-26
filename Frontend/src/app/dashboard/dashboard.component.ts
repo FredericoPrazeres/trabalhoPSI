@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
+import { User } from '../user';
+import { UserService } from '../user.service';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,12 +11,35 @@ import { DashboardService } from '../dashboard.service';
 })
 export class DashboardComponent implements OnInit {
 
-  username:String="";
+  currentUser:User |undefined;
 
-  constructor(private dashboardService:DashboardService) { }
+  constructor(private userService:UserService) { }
 
   ngOnInit(): void {
-    this.dashboardService.getSessionName().subscribe(result =>
-      this.username=result);
+    this.userService.getCurrentUser()
+    .pipe(
+      catchError((error: any) => {
+        this.userService.routeHere('/');
+        return [];
+      })
+    )
+    .subscribe((res: any) => {
+      console.log(res);
+      this.currentUser = res.user;
+    });
+
+  }
+
+  logout(){
+    this.userService.logout().pipe(
+      catchError((error:any)=>{
+        throw error;
+      })
+    )
+    .subscribe((res:any)=>{
+      console.log(res.message);
+      this.currentUser=undefined;
+      this.userService.routeHere('/');
+    })
   }
 }
