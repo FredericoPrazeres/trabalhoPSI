@@ -9,11 +9,20 @@ import { User } from '../user';
 })
 export class LoginScreenComponent {
 
-  loginMessage:string="";
+  loginMessage:String="";
 
   constructor(private userService: UserService){}
   
   login(name:string, password:string){
-    this.loginMessage = this.userService.loginUser({name,password} as User);
+    this.userService.loginUser(name,password).subscribe(string=>{
+      this.loginMessage=string;
+    }),
+      (error:any)=>{
+        console.log(error);
+        return;
+      };
+  }
+  goRegisterScreen(){
+    this.userService.routeHere('/register-screen');
   }
 }
