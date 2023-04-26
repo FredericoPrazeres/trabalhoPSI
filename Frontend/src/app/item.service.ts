@@ -12,7 +12,7 @@ export class ItemService {
   private serverNodeUrl = 'http://localhost:3000/items';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    withCredentials:true
+    withCredentials: true,
   };
 
   getAllItems(): Observable<Item[]> {
@@ -33,5 +33,12 @@ export class ItemService {
       }),
     };
     return this.http.get<Item>(url, httpOptions);
+  }
+
+  getItem(name: string): Observable<Item> {
+    return this.http.get<Item>(
+      `${this.serverNodeUrl}/item/` + name,
+      this.httpOptions
+    );
   }
 }

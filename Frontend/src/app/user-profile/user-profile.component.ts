@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { User } from '../user';
 
@@ -11,15 +11,25 @@ import { User } from '../user';
 })
 export class UserProfileComponent implements OnInit {
   user: User | undefined;
-  name: String| undefined;
+  name: String | undefined;
 
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
-  ngOnInit() {
-    const name = this.route.snapshot.paramMap.get('name')!;
-    this.userService.getUser(name).subscribe(user=>this.user=user);
+  ngOnInit(): void {
+    this.userService
+      .getCurrentUser()
+      .pipe(
+        catchError((error: any) => {
+          this.userService.routeHere('/');
+          return [];
+        })
+      )
+      .subscribe((res: any) => {
+        this.user = res.user;
+      });
+  }
+
+  dashboard() {
+    this.userService.routeHere('/dashboard');
   }
 }

@@ -6,13 +6,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import {
-  Observable,
-  catchError,
-  map,
-  mergeMap,
-  of,
-} from 'rxjs';
+import { Observable, catchError, map, mergeMap, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -25,13 +19,17 @@ export class UserService {
   private serverNodeUrl = 'http://localhost:3000';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    withCredentials:true
+    withCredentials: true,
   };
 
-
-
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.serverNodeUrl}/login`,this.httpOptions);
+    return this.http.get<User>(`${this.serverNodeUrl}/login`, this.httpOptions);
+  }
+
+  getCurrentUserName(): Observable<string> {
+    return this.http
+      .get<User>(`${this.serverNodeUrl}/login`, this.httpOptions)
+      .pipe(map((user) => user.name));
   }
 
   registerUser(user: User): Observable<String> {
@@ -50,9 +48,13 @@ export class UserService {
 
   login(name: string, password: string): Observable<User> {
     const payload = { name, password };
-    return this.http.post<User>(`${this.serverNodeUrl}/login`, payload,this.httpOptions);
+    return this.http.post<User>(
+      `${this.serverNodeUrl}/login`,
+      payload,
+      this.httpOptions
+    );
   }
-  
+
   routeHere(path: string) {
     this.router.navigate([path]);
   }
@@ -72,17 +74,21 @@ export class UserService {
       })
     );
   }
+
   getUser(name: string): Observable<User> {
-    return this.http.get<User>(this.serverNodeUrl+"/user/"+name,this.httpOptions).pipe(map(user=>{
-      return user;
-    }),
-    catchError((error: HttpErrorResponse)=>{
-      throw error;
-    })
-    );
+    return this.http
+      .get<User>(this.serverNodeUrl + '/user/' + name, this.httpOptions)
+      .pipe(
+        map((user) => {
+          return user;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          throw error;
+        })
+      );
   }
 
   logout(): Observable<any> {
-    return this.http.get(`${this.serverNodeUrl}/logout`,this.httpOptions);
+    return this.http.get(`${this.serverNodeUrl}/logout`, this.httpOptions);
   }
 }

@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterScreenComponent } from './register-screen/register-screen.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ItemDetailCompenent } from './item-detail/item-detail.component';
 
 @NgModule({
   declarations: [
@@ -17,14 +18,11 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     DashboardComponent,
     RegisterScreenComponent,
     ItemListComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ItemDetailCompenent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -17,15 +17,15 @@ const userSchema = new Schema({
         required: false,
     },
     library: {
-        type: [Item.schema],
+        type: String,
         required: false,
     },
     wishList: {
-        type: [Item.schema],
+        type: String,
         required: false,
     },
     customLists: {
-        type: [Item.schema],
+        type: String,
         required: false,
     },
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

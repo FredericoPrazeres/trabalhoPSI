@@ -7,38 +7,44 @@ import { catchError } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  currentUser: User | undefined;
+  route: any;
 
-  currentUser:User |undefined;
-
-  constructor(private userService:UserService) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getCurrentUser()
-    .pipe(
-      catchError((error: any) => {
-        this.userService.routeHere('/');
-        return [];
-      })
-    )
-    .subscribe((res: any) => {
-      this.currentUser = res.user;
-    });
-
+    this.userService
+      .getCurrentUser()
+      .pipe(
+        catchError((error: any) => {
+          this.userService.routeHere('/');
+          return [];
+        })
+      )
+      .subscribe((res: any) => {
+        this.currentUser = res.user;
+      });
   }
 
-  logout(){
-    this.userService.logout().pipe(
-      catchError((error:any)=>{
-        throw error;
-      })
-    )
-    .subscribe((res:any)=>{
-      console.log(res.message);
-      this.currentUser=undefined;
-      this.userService.routeHere('/');
-    })
+  logout() {
+    this.userService
+      .logout()
+      .pipe(
+        catchError((error: any) => {
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
+        console.log(res.message);
+        this.currentUser = undefined;
+        this.userService.routeHere('/');
+      });
+  }
+
+  getUserProfile() {
+    this.userService.routeHere('/user/' + this.currentUser?.name);
   }
 }

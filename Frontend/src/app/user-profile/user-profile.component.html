@@ -1,7 +1,10 @@
 <div *ngIf="user" class="profile">
     <div class="profile-header">
-        <img class="profile-picture" src="https://www.example.com/profile-picture.jpg" alt="Profile Picture" />
-        <h1 class="profile-name" >Perfil do {{user.name}}</h1>
+        <img class="profile-picture" [src]="
+        user.profilePictureUrl ||
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+      " alt="" />
+        <h1 class="profile-name">{{ user.name }}</h1>
     </div>
 
     <div class="profile-links">
@@ -15,5 +18,10 @@
         <a href="#">Wishlist</a>
         <a href="#">Listas Personalizadas</a>
         <a href="#">Listas de Seguidores</a>
+        <a href="#">Utilizadores a Seguir</a>
+    </div>
+
+    <div class="go-back">
+        <button type="submit" (click)="dashboard()">dashboard</button>
     </div>
 </div>
