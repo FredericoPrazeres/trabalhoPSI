@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { User } from '../user';
@@ -11,7 +10,8 @@ import { User } from '../user';
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit {
-  user: Observable<User>;
+  user: User | undefined;
+  name: String| undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,9 +19,7 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.user = this.route.paramMap.pipe(
-      map((params) => params.get('name')),
-      switchMap((name) => this.userService.getUser(name))
-    );
+    const name = this.route.snapshot.paramMap.get('name')!;
+    this.userService.getUser(name).pipe(map(utilizador=>this.user=utilizador));
   }
 }

@@ -7,13 +7,17 @@ import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterScreenComponent } from './register-screen/register-screen.component';
+import { ItemListComponent } from './item-list/item-list.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginScreenComponent,
     DashboardComponent,
-    RegisterScreenComponent
+    RegisterScreenComponent,
+    ItemListComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
