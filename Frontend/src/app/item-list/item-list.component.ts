@@ -8,7 +8,7 @@ import { ItemService } from '../item.service';
   styleUrls: ['./item-list.component.css'],
 })
 export class ItemListComponent implements OnInit {
-  item: Item[] | undefined;
+  items: Item[] | undefined;
   loading: boolean = true;
 
   constructor(private itemService: ItemService) {}
@@ -21,7 +21,7 @@ export class ItemListComponent implements OnInit {
     try {
       this.loading = true;
       this.itemService.getAllItems().subscribe((item) => {
-        this.item = item;
+        this.items = item;
         this.loading = false;
       });
     } catch (error) {

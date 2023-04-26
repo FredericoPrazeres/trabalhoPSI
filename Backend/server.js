@@ -47,7 +47,7 @@ app.get('/users', async(req, res) => {
 });
 
 app.get('/user/:name', async(req, res) => {
-    await User.findOne({ name: req.params.name }).select('-_id -__v').then(user => {
+    await User.findOne({ name: req.params.name }).select('-_id -__v -password').then(user => {
         if (user) {
             res.json(user);
         } else {

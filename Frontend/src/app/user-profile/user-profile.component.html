@@ -1,7 +1,7 @@
-<div class="profile">
+<div *ngIf="user" class="profile">
     <div class="profile-header">
         <img class="profile-picture" src="https://www.example.com/profile-picture.jpg" alt="Profile Picture" />
-        <h1 class="profile-name">Nome do Usuário</h1>
+        <h1 class="profile-name" >Perfil do {{user.name}}</h1>
     </div>
 
     <div class="profile-links">

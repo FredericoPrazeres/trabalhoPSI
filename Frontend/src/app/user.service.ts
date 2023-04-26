@@ -17,6 +17,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -79,7 +80,12 @@ export class UserService {
     );
   }
   getUser(name: string): Observable<User> {
-    const url = `${this.serverNodeUrl}/${name}`;
-    return this.http.get<User>(url);
+    return this.http.get<User>(this.serverNodeUrl+"/user/"+name,this.httpOptions).pipe(map(user=>{
+      return user;
+    }),
+    catchError((error: HttpErrorResponse)=>{
+      throw error;
+    })
+    );
   }
 }

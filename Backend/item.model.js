@@ -43,7 +43,8 @@ const itemSchema = new Schema({
         },
     }, ],
     mainImage: {
-        type: String,
+        type: Buffer,
+        default:'./pfp.jpg',
         required: true,
     },
     secondaryImages: [{

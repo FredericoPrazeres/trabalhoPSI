@@ -1,4 +1,4 @@
-const Item = require("./item.module");
+const Item = require("./item.model");
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
