@@ -27,9 +27,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-html{
-  background-color: #ffffff;
-}
 
 .testbox {
   margin: 20px auto;
@@ -94,7 +91,7 @@ button {
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  width: 120px; height: 5rem; 
+  width: 6rem; height: 5rem; 
   -webkit-border-radius: 5px; 
   -moz-border-radius: 5px; 
   border-radius: 5px; 

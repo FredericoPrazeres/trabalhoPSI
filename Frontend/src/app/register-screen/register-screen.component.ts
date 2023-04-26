@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user.service';
-import { map } from 'rxjs';
+import { catchError, map } from 'rxjs';
 import { User } from '../user';
 
 @Component({
@@ -13,6 +13,20 @@ export class RegisterScreenComponent {
   registerMessage:String="";
 
   constructor(private userService:UserService){}
+
+
+  ngOnInit(): void {
+    this.userService.getCurrentUser()
+  .pipe(
+    catchError((error: any) => {
+      return [];
+    })
+  )
+  .subscribe((user: User) => {
+    this.userService.routeHere('/dashboard');
+  });
+
+  }
 
   goLogin(){
     this.userService.routeHere('/login-screen');

@@ -11,7 +11,6 @@ import { catchError } from 'rxjs';
 export class LoginScreenComponent implements OnInit {
 
   loginMessage:string="";
-  currentUser : User | undefined;
 
   constructor(private userService: UserService){}
   
@@ -24,7 +23,6 @@ export class LoginScreenComponent implements OnInit {
   )
   .subscribe((user: User) => {
     this.userService.routeHere('/dashboard');
-    this.currentUser = user;
   });
 
   }
@@ -41,7 +39,6 @@ export class LoginScreenComponent implements OnInit {
       })
     )
     .subscribe((res:any)=>{
-      this.currentUser=res.user;
       this.userService.routeHere('/dashboard');
     })
   }

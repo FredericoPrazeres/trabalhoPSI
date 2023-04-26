@@ -1,0 +1,10 @@
+body{
+    background: linear-gradient(to bottom, #ffffff, #000000);
+}
+body h1{
+    text-align: center;
+    border:solid 3px cyan;
+    display: inline-block;
+    margin-left: 28rem;
+    fill:cyan;
+}

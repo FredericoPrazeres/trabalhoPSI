@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
       })
     )
     .subscribe((res: any) => {
-      console.log(res);
       this.currentUser = res.user;
     });
 
