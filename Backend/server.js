@@ -80,7 +80,6 @@ app.post('/items', async(req, res) => {
 
     const newItem = new Item({
         name: req.body.name,
-        password: req.body.password,
         type: req.body.type,
         description: req.body.description,
         platform: req.body.platform,
@@ -110,9 +109,10 @@ app.put('/user/:name', async (req, res) => {
         return res.status(400).json({ error: 'Item doesnt exist' });
     }
 
-    await User.findOne({name: req.params.name}).then( user => {
+    await User.findOne({name: req.params.name}).then( async user => {
         user.library.push(existingItem.name);
-        user.save();
+        await user.save();
+        req.session.user=user;
         res.json();
     }).catch(err => {
         res.status(500).send(err.message);
