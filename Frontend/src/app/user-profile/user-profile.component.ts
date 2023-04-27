@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { User } from '../user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +14,7 @@ export class UserProfileComponent implements OnInit {
   user: User | undefined;
   name: String | undefined;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.userService
@@ -31,5 +32,9 @@ export class UserProfileComponent implements OnInit {
 
   dashboard() {
     this.userService.routeHere('/dashboard');
+  }
+
+  goToItem(item: String) {
+    this.userService.routeHere('/item/' + item);
   }
 }
