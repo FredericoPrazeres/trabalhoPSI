@@ -1,38 +1,38 @@
-<div class="item-details">
+<div *ngIf=item class="item-details">
     <div class="item-header">
         <img class="mainImage" [src]="
-        item?.mainImage ||
+        item.mainImage ||
         'https://www.pngplay.com/wp-content/uploads/5/Question-Mark-Symbol-PNG-Background.png'
-      " alt="{{ item?.name }}" />
+      " alt="{{ item.name }}" />
     </div>
 
     <div class="item-body">
         <div class="item-description">
-            <h3>{{ item?.name }}</h3>
+            <h3>{{ item.name }}</h3>
             <h3>Descrição</h3>
-            <p>{{ item?.description | slice : 0 : 1000 }}</p>
+            <p>{{ item.description | slice : 0 : 1000 }}</p>
         </div>
 
         <div class="item-info">
             <h3>Informações</h3>
             <ul>
-                <li><strong>Preço:</strong> {{ item?.price }}</li>
-                <li><strong>Tipo:</strong> {{ item?.type }}</li>
-                <li><strong>Plataforma:</strong> {{ item?.platform }}</li>
-                <li><strong>Idiomas:</strong> {{ item?.languages }}</li>
-                <li><strong>Classificação geral:</strong> {{ item?.overallRating }}</li>
-                <li><strong>Avaliações:</strong> {{ item?.ratings }}</li>
+                <li><strong>Preço:</strong> {{ item.price }}</li>
+                <li><strong>Tipo:</strong> {{ item.type }}</li>
+                <li><strong>Plataforma:</strong> {{ item.platform }}</li>
+                <li><strong>Idiomas:</strong> {{ item.languages }}</li>
+                <li><strong>Classificação geral:</strong> {{ item.overallRating }}</li>
+                <li><strong>Avaliações:</strong> {{ item.ratings }}</li>
             </ul>
         </div>
 
         <div class="item-media">
             <h3>Mídia</h3>
             <div class="item-images">
-                <img src="{{ item?.mainImage }}" alt="{{ item?.name }}" />
-                <img src="{{ item?.secondaryImages }}" alt="{{ item?.name }}" />
+                <img src="{{ item.mainImage }}" alt="{{ item.name }}" />
+                <img src="{{ item.secondaryImages }}" alt="{{ item.name }}" />
             </div>
             <div class="item-video">
-                <iframe width="560" height="315" src="{{ item?.video }}" frameborder="0" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="{{ item.video }}" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ import { ItemService } from '../item.service';
 import { Item } from '../item';
 import { UserService } from '../user.service';
 import { User } from '../user';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-item-detail',
@@ -17,11 +18,22 @@ export class ItemDetailCompenent implements OnInit {
   user: User | undefined;
 
   constructor(
+    private route :ActivatedRoute,
     private itemService: ItemService,
     private userService: UserService
   ) {}
 
+  getItem(){
+    const name = this.route.snapshot.paramMap.get('name');
+    if (name===null){
+      this.userService.routeHere('/');
+      return;
+    }
+    this.itemService.getItem(name).subscribe(item=>this.item=item);
+  }
+
   ngOnInit(): void {
+    this.getItem();
     this.userService
       .getCurrentUser()
       .pipe(
