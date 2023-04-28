@@ -47,4 +47,8 @@ export class DashboardComponent implements OnInit {
   getUserProfile() {
     this.userService.routeHere('/user/' + this.currentUser?.name);
   }
+
+  searchUsers(): void {
+    this.userService.routeHere('/user-search');
+  }
 }
