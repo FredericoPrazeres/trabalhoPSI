@@ -8,11 +8,11 @@ var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
-app.use(cors({ origin: ["http://appserver.alunos.di.fc.ul.pt:3008"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
-    "mongodb://psi008:psi008@localhost:27017/psi008?retryWrites=true&authSource=psi008";
+    "mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDbUrl);
 

@@ -9,14 +9,14 @@ import { Item } from './item';
 })
 export class ItemService {
   constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
   };
 
   getAllItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.serverNodeUrl+"/items");
+    return this.http.get<Item[]>(this.serverNodeUrl + '/items');
   }
 
   getItemById(id: string): Observable<Item> {

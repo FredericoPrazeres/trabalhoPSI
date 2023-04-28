@@ -16,20 +16,18 @@ export class DashboardComponent implements OnInit {
   currentUser: User | undefined;
   route: any;
 
-  ufilter: string = "";
+  ufilter: string = '';
   filteredItems: Item[] = [];
   items: Item[] = [];
-  showMessage: boolean=false;
+  showMessage: boolean = false;
 
   constructor(
     private userService: UserService,
     private itemService: ItemService,
     private router: Router
-    ) {}
+  ) {}
 
   ngOnInit(): void {
-
-
     this.itemService.getAllItems().subscribe((resd) => {
       if (resd) {
         this.items = resd;
@@ -72,22 +70,23 @@ export class DashboardComponent implements OnInit {
     this.userService.routeHere('/user-search');
   }
 
-  pesquisar(): void{
-    this.showMessage=false;
-    if(this.ufilter.trim().length > 1) {
-      this.filteredItems = this.items.filter(i => i.name.includes(this.ufilter));
-      if(this.filteredItems.length == 0) {
-        this.showMessage=true;
+  pesquisar(): void {
+    this.showMessage = false;
+    if (this.ufilter.trim().length > 1) {
+      this.filteredItems = this.items.filter((i) =>
+        i.name.includes(this.ufilter)
+      );
+      if (this.filteredItems.length == 0) {
+        this.showMessage = true;
       }
-    } 
+    }
   }
 
-  goItem(name:string): void {
-    this.userService.routeHere('/item/'+name);
-  }   
+  goItem(name: string): void {
+    this.userService.routeHere('/item/' + name);
+  }
 
-
-  wishlist(){
-    this.userService.routeHere('/wishlist');
+  wishlist() {
+    this.userService.routeHere('/wishlist/' + this.currentUser?.name);
   }
 }

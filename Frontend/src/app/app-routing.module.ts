@@ -16,8 +16,7 @@ const routes: Routes = [
   { path: 'user/:name', component: UserProfileComponent },
   { path: 'item/:name', component: ItemDetailComponent },
   { path: 'user-search', component: UserSearchComponent },
-  { path: 'wishlist', component: WishlistComponent },
-
+  { path: 'wishlist/:name', component: WishlistComponent },
 ];
 
 @NgModule({
