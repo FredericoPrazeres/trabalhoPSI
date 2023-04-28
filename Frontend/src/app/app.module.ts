@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
@@ -10,6 +10,7 @@ import { RegisterScreenComponent } from './register-screen/register-screen.compo
 import { ItemListComponent } from './item-list/item-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
+import { UserSearchComponent } from './user-search/user-search.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,14 @@ import { ItemDetailComponent } from './item-detail/item-detail.component';
     ItemListComponent,
     UserProfileComponent,
     ItemDetailComponent,
+    UserSearchComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,        
+    AppRoutingModule, 
+    HttpClientModule,
+    FormsModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

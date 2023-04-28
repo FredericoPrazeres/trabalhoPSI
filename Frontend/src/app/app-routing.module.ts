@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterScreenComponent } from './register-screen/register-screen.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
+import { UserSearchComponent } from './user-search/user-search.component';
 
 const routes: Routes = [
   { path: 'login-screen', component: LoginScreenComponent },
@@ -13,6 +14,8 @@ const routes: Routes = [
   { path: 'register-screen', component: RegisterScreenComponent },
   { path: 'user/:name', component: UserProfileComponent },
   { path: 'item/:name', component: ItemDetailComponent },
+  { path: 'user-search', component: UserSearchComponent },
+
 ];
 
 @NgModule({

@@ -91,4 +91,17 @@ export class UserService {
   logout(): Observable<any> {
     return this.http.get(`${this.serverNodeUrl}/logout`, this.httpOptions);
   }
+
+  getUsers(): Observable<User[]> {
+    return this.http
+      .get<User[]>(this.serverNodeUrl + '/users', this.httpOptions)
+      .pipe(
+        map((users) => {
+          return users;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          throw error;
+        })
+      );
+  }
 }
