@@ -8,7 +8,7 @@ var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
-app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
+app.use(cors({ origin: ["http://appserver.alunos.di.fc.ul.pt:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
