@@ -11,6 +11,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { UserSearchComponent } from './user-search/user-search.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
     UserProfileComponent,
     ItemDetailComponent,
     UserSearchComponent,
+    WishlistComponent,
   ],
   imports: [
     BrowserModule,        

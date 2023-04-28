@@ -51,4 +51,8 @@ export class DashboardComponent implements OnInit {
   searchUsers(): void {
     this.userService.routeHere('/user-search');
   }
+
+  wishlist(){
+    this.userService.routeHere('/wishlist');
+  }
 }
