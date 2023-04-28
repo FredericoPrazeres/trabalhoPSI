@@ -86,4 +86,8 @@ export class DashboardComponent implements OnInit {
     this.userService.routeHere('/item/'+name);
   }   
 
+
+  wishlist(){
+    this.userService.routeHere('/wishlist');
+  }
 }

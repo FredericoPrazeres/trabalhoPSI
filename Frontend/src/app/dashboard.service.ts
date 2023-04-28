@@ -9,7 +9,7 @@ import { User } from './user';
 })
 export class DashboardService {
   constructor(private http : HttpClient, private router:Router) { }
-  private serverNodeUrl = 'http://localhost:3000';
+  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
 
   sessionUser:User|undefined;
 
