@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { User } from '../user';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,8 +13,9 @@ import { Router } from '@angular/router';
 export class UserProfileComponent implements OnInit {
   user: User | undefined;
   name: String | undefined;
+  
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router,private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.userService
@@ -26,7 +27,8 @@ export class UserProfileComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        this.user = res.user;
+        const name=this.route.snapshot.paramMap.get('name')!;
+        this.userService.getUser(name).subscribe(res=>this.user=res);
       });
   }
 
