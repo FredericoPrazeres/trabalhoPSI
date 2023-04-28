@@ -9,4 +9,5 @@ export interface User {
   customLists: string[];
   followingLists: string[];
   followerLists: string[];
+  carrinho:string[];
 }

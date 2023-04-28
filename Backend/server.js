@@ -118,13 +118,35 @@ app.put("/user/:name", async(req, res) => {
     if (existingItem === null) {
         return res.status(400).json({ error: "Item doesnt exist" });
     }
-
+    console.log(existingItem.name);
     await User.findOne({ name: req.params.name })
         .then(async(user) => {
             user.library.push(existingItem.name);
             await user.save();
             req.session.user = user;
             res.json();
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+        });
+});
+app.put("/user/cart/:name", async(req, res) => {
+    var existingItem;
+    console.log(req.session.user.name);
+    console.log(req.params.name);
+
+    await Item.findOne({ name: req.params.name }).then((item) => {
+        existingItem = item;
+    });
+    if (existingItem === null) {
+        return res.status(400).json({ error: "Item doesnt exist" });
+    }
+
+    await User.findOne({ name: req.session.user.name })
+        .then(async(user) => {
+            user.carrinho.push(existingItem.name);
+            await user.save();
+            req.session.user = user;
         })
         .catch((err) => {
             res.status(500).send(err.message);
@@ -174,10 +196,8 @@ app.post("/login", validatePayloadMiddleware, async(req, res) => {
         .select("-_id -__v -password")
         .then((user) => {
             if (user) {
-                const userWithoutPassword = { user };
-                delete userWithoutPassword.password;
-                req.session.user = userWithoutPassword;
-                res.send(userWithoutPassword);
+                req.session.user = user;
+                res.send(req.session.user);
             } else {
                 res
                     .status(401)

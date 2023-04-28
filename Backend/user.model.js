@@ -28,6 +28,10 @@ const userSchema = new Schema({
         type: [String],
         required: false,
     },
+    carrinho: {
+        type: [String],
+        required: false,
+    },
     followingLists: {
         type: [String],
         required:false

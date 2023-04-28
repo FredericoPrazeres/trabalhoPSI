@@ -47,13 +47,19 @@
     <div class="dashboard">
       <div class="users">
         <div class="top">
-          <h4>Users</h4>
+          <h4>Carrinho</h4>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
+        <a class="items" *ngFor="let item of currentUser?.carrinho">
+          <p >Item: {{item}}</p>
+        </a>
       </div>
       <div class="wishlist">
         <div class="top">
           <h4>Wishlist</h4>
+          <a class="wishlist" *ngFor="let item of currentUser?.wishlist">
+            <p >Item: {{item}}</p>
+          </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
 
@@ -63,7 +69,7 @@
         <div class="top">
           <h4>Following</h4>
           <a class="items" *ngFor="let user of currentUser?.followingLists">
-            <p >Item: {{user}}</p>
+            <p >User: {{user}}</p>
           </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
@@ -80,6 +86,7 @@
 
       </div>
 
+
       <div class="compContainer">
         <h3>Pesquisa de Items</h3>
         <p>&nbsp;</p>
@@ -90,7 +97,7 @@
                     <input type="text" class="form-control" id="ufilter" name="ufilter" required [(ngModel)]="ufilter">
     
                 </div>
-                <button (click)="pesquisar()"> Pesquisar:</button>
+                <button class="itemSearchButton"(click)="pesquisar()"> Pesquisar:</button>
             </form>
         </div>
         <p>&nbsp;</p>

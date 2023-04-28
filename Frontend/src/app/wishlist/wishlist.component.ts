@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WishlistService } from '../wishlist.service';
 import { Item } from '../item';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { User } from '../user';
 import { UserService } from '../user.service';
 
@@ -15,15 +15,18 @@ export class WishlistComponent implements OnInit {
   items: Item[] = []; // A lista de itens da wishlist
   itemName!: string;
   user: User | undefined;
+  currentUser:User|undefined;
 
   constructor(
     private wishlistService: WishlistService,
-    private router: Router,
     private route: ActivatedRoute,
     private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    const userName =this.route.snapshot.paramMap.get('name')!;
+    this.userService.getUser(userName).subscribe(res=>this.user=res);
+
     this.userService
       .getCurrentUser()
       .pipe(
@@ -33,12 +36,10 @@ export class WishlistComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        const name = this.route.snapshot.paramMap.get('name')!;
-        this.userService
-          .getUser(name)
-          .subscribe((res: any) => (this.user = res));
+        this.currentUser = res;
       });
   }
+
 
   loadItems() {
     this.wishlistService.getItems().subscribe((items) => {

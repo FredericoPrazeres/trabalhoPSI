@@ -41,4 +41,10 @@ export class ItemService {
       this.httpOptions
     );
   }
+  addItemToUser(item:string){
+    const payload = {name:item};
+    return this.http.put(`${this.serverNodeUrl}/user/cart/`+item,payload,this.httpOptions);
+  }
+
+  
 }

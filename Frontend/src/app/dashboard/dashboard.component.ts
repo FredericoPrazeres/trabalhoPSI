@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        this.currentUser = res.user;
+        this.currentUser = res;
       });
   }
 

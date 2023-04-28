@@ -11,9 +11,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit {
-  user: User | undefined;
+  currentUser: User | undefined;
   name: String | undefined;
-
+  user:User|undefined;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -21,6 +21,9 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const userName =this.route.snapshot.paramMap.get('name')!;
+    this.userService.getUser(userName).subscribe(res=>this.user=res);
+
     this.userService
       .getCurrentUser()
       .pipe(
@@ -30,8 +33,7 @@ export class UserProfileComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        const name = this.route.snapshot.paramMap.get('name')!;
-        this.userService.getUser(name).subscribe((res) => (this.user = res));
+        this.currentUser = res;
       });
   }
 
@@ -44,6 +46,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToWishlist() {
-    this.userService.routeHere('/wishlist');
+    this.userService.routeHere('/wishlist/'+this.user?.name);
   }
 }

@@ -47,7 +47,16 @@ export class ItemDetailComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        this.user = res.user;
-      });
+        this.user = res;
+      });  
+  }
+  addItemToCart(){
+    console.log(this.item?.name);
+    if(this.item===undefined){
+      return;
+    }else{
+      this.itemService.addItemToUser(this.item.name);
+    }
+    
   }
 }
