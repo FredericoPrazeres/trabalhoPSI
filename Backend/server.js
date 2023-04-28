@@ -8,11 +8,11 @@ var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
-app.use(cors({ origin: ["http://localhost:4200"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
-    "mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority";
+    "mongodb://psi008:psi008@localhost:27017/psi008?retryWrites=true&authSource=psi008";
 
 mongoose.connect(mongoDbUrl);
 
@@ -94,6 +94,18 @@ app.post("/items", async(req, res) => {
         .catch((error) => {
             console.log(error);
             res.status(500).json({ error: error });
+        });
+});
+
+app.get("/items", async(req, res) => {
+    await Item.find({})
+        .select("-_id -__v")
+        .then((items) => {
+            res.json(items);
+        })
+        .catch((err) => {
+            console.log("err");
+            res.status(500).json({ error: err });
         });
 });
 
@@ -201,4 +213,4 @@ app.get("/logout", async(req, res) => {
     });
 });
 
-app.listen(3000, () => console.log(`Express server running on port 3000`));
+app.listen(3058, () => console.log(`Express server running on port 3058`));
