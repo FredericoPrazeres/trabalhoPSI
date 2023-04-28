@@ -148,6 +148,10 @@ main{
   padding: 30px;
 }
 
+.dashboard .compContainer{
+  height: 200px;
+  width: 350px;
+}
 
 .dashboard .games_library{
   height: 340px;

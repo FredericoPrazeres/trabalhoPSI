@@ -58,6 +58,9 @@
       <div class="following">
         <div class="top">
           <h4>Following</h4>
+          <a class="items" *ngFor="let user of currentUser?.followingLists">
+            <p >Item: {{user}}</p>
+          </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
 
@@ -65,10 +68,36 @@
       <div class="followed_by">
         <div class="top">
           <h4>Followed By</h4>
+          <a class="items" *ngFor="let user of currentUser?.followerLists">
+            <p >Item: {{user}}</p>
+          </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
 
       </div>
+
+      <div class="compContainer">
+        <h3>Pesquisa de Items</h3>
+        <p>&nbsp;</p>
+        <div class="form-container">
+            <form>
+                <div class="form-group">
+                    <label for="ufilter"> Item Name</label>
+                    <input type="text" class="form-control" id="ufilter" name="ufilter" required [(ngModel)]="ufilter">
+    
+                </div>
+                <button (click)="pesquisar()"> Pesquisar:</button>
+            </form>
+        </div>
+        <p>&nbsp;</p>
+        <div *ngIf="showMessage">Não existe item que corresponda a esse filtro.</div>
+        <div class="item-list">
+            <ul>
+                <li *ngFor="let i of filteredItems"><button (click)="goItem(i.name)">{{i.name}}</button></li>
+            </ul>
+        </div>
+    </div>
+
       <div class="games_library">
 
         <h2>Biblioteca de items</h2>

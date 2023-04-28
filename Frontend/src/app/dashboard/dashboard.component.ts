@@ -3,6 +3,9 @@ import { DashboardService } from '../dashboard.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { catchError } from 'rxjs';
+import { Item } from '../item';
+import { Router } from '@angular/router';
+import { ItemService } from '../item.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,9 +16,26 @@ export class DashboardComponent implements OnInit {
   currentUser: User | undefined;
   route: any;
 
-  constructor(private userService: UserService) {}
+  ufilter: string = "";
+  filteredItems: Item[] = [];
+  items: Item[] = [];
+  showMessage: boolean=false;
+
+  constructor(
+    private userService: UserService,
+    private itemService: ItemService,
+    private router: Router
+    ) {}
 
   ngOnInit(): void {
+
+
+    this.itemService.getAllItems().subscribe((resd) => {
+      if (resd) {
+        this.items = resd;
+      }
+    });
+
     this.userService
       .getCurrentUser()
       .pipe(
@@ -51,4 +71,19 @@ export class DashboardComponent implements OnInit {
   searchUsers(): void {
     this.userService.routeHere('/user-search');
   }
+
+  pesquisar(): void{
+    this.showMessage=false;
+    if(this.ufilter.trim().length > 1) {
+      this.filteredItems = this.items.filter(i => i.name.includes(this.ufilter));
+      if(this.filteredItems.length == 0) {
+        this.showMessage=true;
+      }
+    } 
+  }
+
+  goItem(name:string): void {
+    this.userService.routeHere('/item/'+name);
+  }   
+
 }

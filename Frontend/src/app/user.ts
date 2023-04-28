@@ -7,5 +7,6 @@ export interface User {
   profilePictureUrl: string;
   wishlist: string[];
   customLists: string[];
+  followingLists: string[];
   followerLists: string[];
 }
