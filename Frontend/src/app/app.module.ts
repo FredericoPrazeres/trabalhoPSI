@@ -9,7 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterScreenComponent } from './register-screen/register-screen.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ItemDetailCompenent } from './item-detail/item-detail.component';
+import { ItemDetailComponent } from './item-detail/item-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { ItemDetailCompenent } from './item-detail/item-detail.component';
     RegisterScreenComponent,
     ItemListComponent,
     UserProfileComponent,
-    ItemDetailCompenent,
+    ItemDetailComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],

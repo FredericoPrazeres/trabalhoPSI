@@ -4,7 +4,7 @@ import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterScreenComponent } from './register-screen/register-screen.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ItemDetailCompenent } from './item-detail/item-detail.component';
+import { ItemDetailComponent } from './item-detail/item-detail.component';
 
 const routes: Routes = [
   { path: 'login-screen', component: LoginScreenComponent },
@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login-screen', pathMatch: 'full' },
   { path: 'register-screen', component: RegisterScreenComponent },
   { path: 'user/:name', component: UserProfileComponent },
-  { path: 'item/:name', component: ItemDetailCompenent },
+  { path: 'item/:name', component: ItemDetailComponent },
 ];
 
 @NgModule({

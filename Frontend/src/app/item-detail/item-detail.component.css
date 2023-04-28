@@ -1,8 +1,3 @@
-.item-details {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .item-header {
     display: flex;
     align-items: center;
@@ -30,9 +25,8 @@ img {
 }
 
 .item-description {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     font-size: 18px;
-    max-height: 80px;
     overflow: hidden;
 }
 
@@ -93,13 +87,6 @@ img {
     margin-bottom: 20px;
 }
 
-.item-video {
-    width: 300px;
-    height: 200px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
 .item-more a {
     font-size: 18px;
     margin-bottom: 20px;
@@ -109,4 +96,17 @@ img {
 
 .item-more a:hover {
     text-decoration: underline;
+}
+
+.button button {
+    width: 10%;
+    height: 2%;
+    background: #0091ea;
+    color: #ffff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

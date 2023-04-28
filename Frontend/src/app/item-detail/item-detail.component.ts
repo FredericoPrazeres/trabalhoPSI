@@ -12,24 +12,28 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './item-detail.component.html',
   styleUrls: ['./item-detail.component.css'],
 })
-export class ItemDetailCompenent implements OnInit {
+export class ItemDetailComponent implements OnInit {
   item: Item | undefined;
   name: String | undefined;
   user: User | undefined;
 
   constructor(
-    private route :ActivatedRoute,
+    private route: ActivatedRoute,
     private itemService: ItemService,
     private userService: UserService
   ) {}
 
-  getItem(){
+  getItem() {
     const name = this.route.snapshot.paramMap.get('name');
-    if (name===null){
+    if (name === null) {
       this.userService.routeHere('/');
       return;
     }
-    this.itemService.getItem(name).subscribe(item=>this.item=item);
+    this.itemService.getItem(name).subscribe((item) => (this.item = item));
+  }
+
+  dashboard() {
+    this.userService.routeHere('/dashboard');
   }
 
   ngOnInit(): void {

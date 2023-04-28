@@ -3,10 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     type: {
         type: String,
         required: true,
@@ -52,9 +48,10 @@ const itemSchema = new Schema({
         },
     }, ],
     mainImage: {
-        type: Buffer,
-        default: "./pfp.jpg",
-        required: true,
+        type: String,
+        default: () =>
+            "https://static.hertz-audio.com/media/2021/05/no-product-image.png",
+        required: false,
     },
     secondaryImages: [{
         type: String,

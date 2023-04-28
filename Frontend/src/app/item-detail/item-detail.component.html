@@ -1,20 +1,20 @@
-<div *ngIf=item class="item-details">
+<div *ngIf="item" class="item-details">
     <div class="item-header">
         <img class="mainImage" [src]="
         item.mainImage ||
-        'https://www.pngplay.com/wp-content/uploads/5/Question-Mark-Symbol-PNG-Background.png'
-      " alt="{{ item.name }}" />
+        'https://static.hertz-audio.com/media/2021/05/no-product-image.png'
+      " alt="" />
     </div>
 
     <div class="item-body">
         <div class="item-description">
             <h3>{{ item.name }}</h3>
-            <h3>Descrição</h3>
+            <h3>Descrição:</h3>
             <p>{{ item.description | slice : 0 : 1000 }}</p>
         </div>
 
         <div class="item-info">
-            <h3>Informações</h3>
+            <h3>Informações adicionais:</h3>
             <ul>
                 <li><strong>Preço:</strong> {{ item.price }}</li>
                 <li><strong>Tipo:</strong> {{ item.type }}</li>
@@ -28,12 +28,16 @@
         <div class="item-media">
             <h3>Mídia</h3>
             <div class="item-images">
-                <img src="{{ item.mainImage }}" alt="{{ item.name }}" />
-                <img src="{{ item.secondaryImages }}" alt="{{ item.name }}" />
+                <img [src]="item.mainImage" alt="{{ item.name }}" />
+                <img *ngFor="let str of item.secondaryImages" [src]="item.secondaryImages" alt="{{ item.name }}" />
             </div>
             <div class="item-video">
-                <iframe width="560" height="315" src="{{ item.video }}" frameborder="0" allowfullscreen></iframe>
+                <a href="item.video"> {{ item.video }}</a>
             </div>
         </div>
+    </div>
+
+    <div class="button">
+        <button type="submit" (click)="dashboard()">dashboard</button>
     </div>
 </div>
