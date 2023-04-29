@@ -41,10 +41,21 @@ export class ItemService {
       this.httpOptions
     );
   }
-  addItemToUser(item:string){
-    const payload = {name:item};
-    return this.http.put(`${this.serverNodeUrl}/user/cart/`+item,payload,this.httpOptions);
+  addItemToUserCart(item: string) {
+    const payload = { itemName: item }; // Modifique esta linha se necessário
+    return this.http.put(
+      `${this.serverNodeUrl}/user/cart/` + item,
+      payload,
+      this.httpOptions
+    );
   }
 
-  
+  addItemToUserWishlist(item: string) {
+    const payload = { name: item }; // Modifique esta linha se necessário
+    return this.http.put(
+      `${this.serverNodeUrl}/user/wishlist/` + item,
+      payload,
+      this.httpOptions
+    );
+  }
 }

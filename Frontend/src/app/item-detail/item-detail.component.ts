@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { ItemService } from '../item.service';
 import { Item } from '../item';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-item-detail',
@@ -48,15 +49,44 @@ export class ItemDetailComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.user = res;
-      });  
+      });
   }
-  addItemToCart(){
+  addItemToCart() {
     console.log(this.item?.name);
-    if(this.item===undefined){
+    if (this.item === undefined) {
       return;
-    }else{
-      this.itemService.addItemToUser(this.item.name);
+    } else {
+      this.itemService
+        .addItemToUserCart(this.item.name)
+        .pipe(
+          tap(() => {
+            console.log('Item adicionado ao carrinho com sucesso');
+          }),
+          catchError((error) => {
+            console.error('Erro ao adicionar item ao carrinho:', error);
+            return of(null);
+          })
+        )
+        .subscribe();
     }
-    
+  }
+
+  addItemToWishlist() {
+    if (this.item === undefined) {
+      return;
+    } else {
+      this.itemService
+        .addItemToUserWishlist(this.item.name)
+        .pipe(
+          tap(() => {
+            console.log('Item adicionado ao carrinho com sucesso');
+          }),
+          catchError((error) => {
+            console.error('Erro ao adicionar item ao carrinho:', error);
+            return of(null);
+          })
+        )
+        .subscribe();
+    }
   }
 }

@@ -1,17 +1,16 @@
 <h1>Minha Wishlist</h1>
-<div *ngIf="currentUser?.name===user?.name">
-    <h2>Adicionar item à wishlist</h2>
-    <form (ngSubmit)="onSubmit()">
-        <div>
-            <label for="name">Nome do item:</label>
-            <input name="name" [(ngModel)]="itemName" required />
-        </div>
-        <button type="submit">Adicionar</button>
-    </form>
+<div *ngIf="currentUser?.name === user?.name">
+  <h2>Adicionar item à wishlist</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Nome do item:</label>
+      <input name="name" required #itemName />
+    </div>
+  </form>
 </div>
 <ul>
-    <li *ngFor="let item of items">{{ item.name }}</li>
+  <li *ngFor="let item of items">{{ item.name }}</li>
 </ul>
 <div class="button">
-    <button (click)="dashboard()">Dashboard</button>
+  <button (click)="dashboard()">Dashboard</button>
 </div>
