@@ -138,14 +138,13 @@ app.put("/user/wishlist/:name", async (req, res) => {
     existingItem = item;
   });
 
-  console.log("teste");
   if (existingItem === null) {
     return res.status(400).json({ error: "Item doesnt exist" });
   }
 
   await User.findOne({ name: req.session.user.name })
     .then(async (user) => {
-      user.wishList.push(existingItem.name);
+      user.wishlist.push(existingItem.name);
       await user.save();
       req.session.user = user;
       res.json();

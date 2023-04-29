@@ -51,18 +51,17 @@
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.carrinho">
-          <p >Item: {{item}}</p>
+          <p (click)="goItem(item)">Item: {{item}}</p>
         </a>
       </div>
-      <div class="wishlist">
+      <div class="users">
         <div class="top">
           <h4>Wishlist</h4>
-          <a class="wishlist" *ngFor="let item of currentUser?.wishlist">
-            <p >Item: {{item}}</p>
-          </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
-
+        <a class="items" *ngFor="let item of currentUser?.wishlist">
+          <p (click)="goItem(item)">Item: {{item}}</p>
+        </a>
       </div>
 
       <div class="following">

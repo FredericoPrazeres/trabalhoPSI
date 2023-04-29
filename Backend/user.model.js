@@ -20,7 +20,7 @@ const userSchema = new Schema({
         type: [String],
         required: false,
     },
-    wishList: {
+    wishlist: {
         type: [String],
         required: false,
     },
