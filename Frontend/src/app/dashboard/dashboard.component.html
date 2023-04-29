@@ -60,6 +60,7 @@
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.wishlist">
+          <button class="removerButton"(click)="removerItem(item)" >X</button>
           <p (click)="goItem(item)">Item: {{item}}</p>
         </a>
       </div>

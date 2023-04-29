@@ -12,7 +12,7 @@ app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
-  "mongodb://psi008:psi008@localhost:27017/psi008?retryWrites=true&authSource=psi008";
+"mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDbUrl);
 
@@ -65,6 +65,28 @@ app.get("/item/:name", async (req, res) => {
       } else {
         res.status(404).send("No item found with that name");
       }
+    })
+    .catch((err) => {
+      res.status(500).send(err.message);
+    });
+});
+
+app.delete("/user/wishlist/:name",async(req,res)=>{
+  var existingItem;
+
+  await Item.findOne({ name: req.params.name }).then((item) => {
+    existingItem = item;
+  });
+  if (existingItem === null) {
+    return res.status(400).json({ error: "Item doesnt exist" });
+  }
+
+  await User.findOne({ name: req.session.user.name })
+    .then(async (user) => {
+      user.wishlist.pop(existingItem.name);
+      await user.save();
+      req.session.user = user;
+      res.json();
     })
     .catch((err) => {
       res.status(500).send(err.message);

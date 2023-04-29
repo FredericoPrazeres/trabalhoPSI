@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, catchError, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { Item } from './item';
 
@@ -9,7 +9,7 @@ import { Item } from './item';
 })
 export class ItemService {
   constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
@@ -57,5 +57,19 @@ export class ItemService {
       payload,
       this.httpOptions
     );
+  }
+
+  async removeItemWishlist(item: string) {
+    try {
+      await this.http
+        .delete(`${this.serverNodeUrl}/user/wishlist/` + item, this.httpOptions)
+        .pipe(take(1), catchError((err) => {
+          console.error('Error removing item from wishlist:', err);
+          return EMPTY;
+        }))
+        .toPromise();
+    } catch (error) {
+      console.error('Error removing item from wishlist:', error);
+    }
   }
 }

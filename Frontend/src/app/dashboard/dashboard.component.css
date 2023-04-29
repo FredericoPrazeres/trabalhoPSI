@@ -199,4 +199,11 @@ p:hover{
   cursor:pointer;
 }
 
+.removerButton{
+  color:red;
+  margin-left:4rem;
+}
+p{
+  float: left;
+}
 
