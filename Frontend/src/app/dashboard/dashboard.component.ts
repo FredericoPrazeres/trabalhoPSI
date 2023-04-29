@@ -23,8 +23,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private itemService: ItemService,
-    private router: Router
+    private itemService: ItemService
   ) {}
 
   ngOnInit(): void {

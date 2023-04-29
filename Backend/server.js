@@ -12,7 +12,7 @@ app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
-  "mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority";
+  "mongodb://psi008:psi008@localhost:27017/psi008?retryWrites=true&authSource=psi008";
 
 mongoose.connect(mongoDbUrl);
 
