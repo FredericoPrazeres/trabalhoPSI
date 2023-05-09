@@ -14,6 +14,8 @@ export class UserProfileComponent implements OnInit {
   currentUser: User | undefined;
   name: String | undefined;
   user:User|undefined;
+  userFollowers:number=0;
+  following:boolean=false;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -22,7 +24,10 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     const userName =this.route.snapshot.paramMap.get('name')!;
-    this.userService.getUser(userName).subscribe(res=>this.user=res);
+    this.userService.getUser(userName).subscribe(res=>{
+      this.user=res;
+      this.userFollowers=this.user.followerLists.length;
+    });
 
     this.userService
       .getCurrentUser()
@@ -34,6 +39,7 @@ export class UserProfileComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.currentUser = res;
+        this.following=res.followingLists.includes(userName);
       });
   }
 
@@ -48,4 +54,51 @@ export class UserProfileComponent implements OnInit {
   goToWishlist() {
     this.userService.routeHere('/wishlist/'+this.user?.name);
   }
+  followUser(){
+    const pageUser = this.route.snapshot.paramMap.get('name')!;
+    const payload = {name:this.currentUser?.name};
+    if(pageUser===payload.name){
+      alert('Não pode seguir a si mesmo');
+      return;
+    }
+    else if(this.currentUser?.followingLists.includes(pageUser)){
+      alert('Já segue este utilizador');
+      return;
+    }
+    this.userService.followUser(pageUser,payload).subscribe((res: any)=>{
+      if(res!=='Followed successfully'){
+        alert(res);
+      }else{
+        this.currentUser?.followingLists.push(pageUser);
+        this.userFollowers++;
+        this.following=true;
+      }
+    });
+  }
+
+  unfollowUser(){
+    const pageUser = this.route.snapshot.paramMap.get('name')!;
+    const payload = {name:this.currentUser?.name};
+    this.userService.unfollowUser(pageUser,payload).subscribe((res: any)=>{
+      if(res!=='Unfollowed successfully'){
+        alert(res);
+      }else{
+        if (this.currentUser?.followingLists) {
+          this.currentUser.followingLists = this.currentUser.followingLists.filter(item => item !== pageUser);
+        }        
+        this.userFollowers--;
+        this.following=false;
+      }
+    });
+  }
+  goToFollowers(){
+    this.userService.routeHere('/followers/'+this.user?.name);
+  }
+  goToFollowing(){
+    this.userService.routeHere('/following/'+this.user?.name);
+  }
+  goToLibrary(){
+    this.userService.routeHere('library/'+this.user?.name);
+  }
+
 }

@@ -7,6 +7,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
+import { FollowersPageComponent } from './followers-page/followers-page.component';
+import { FollowingPageComponent } from './following-page/following-page.component';
+import { LibraryComponent } from './library/library.component';
 
 const routes: Routes = [
   { path: 'login-screen', component: LoginScreenComponent },
@@ -17,6 +20,9 @@ const routes: Routes = [
   { path: 'item/:name', component: ItemDetailComponent },
   { path: 'user-search', component: UserSearchComponent },
   { path: 'wishlist/:name', component: WishlistComponent },
+  { path: 'followers/:name',component:FollowersPageComponent },
+  { path: 'following/:name',component:FollowingPageComponent },
+  { path: 'library/:name',component:LibraryComponent},
 ];
 
 @NgModule({

@@ -52,15 +52,19 @@ export class ItemDetailComponent implements OnInit {
       });
   }
   addItemToCart() {
-    console.log(this.item?.name);
+    if(this.user?.carrinho.includes(this.item?.name!)){
+      alert('Já possui este item no carrinho');
+      return;
+    }
     if (this.item === undefined) {
       return;
     } else {
+      this.user?.carrinho.push(this.item.name);
       this.itemService
         .addItemToUserCart(this.item.name)
         .pipe(
           tap(() => {
-            console.log('Item adicionado ao carrinho com sucesso');
+            alert('Sucesso');
           }),
           catchError((error) => {
             console.error('Erro ao adicionar item ao carrinho:', error);
@@ -72,14 +76,20 @@ export class ItemDetailComponent implements OnInit {
   }
 
   addItemToWishlist() {
+    if(this.user?.wishlist.includes(this.item?.name!)){
+      alert('Já possui este item na wishlist');
+      return;
+    }
     if (this.item === undefined) {
       return;
     } else {
+      this.user?.wishlist.push(this.item.name);
       this.itemService
         .addItemToUserWishlist(this.item.name)
         .pipe(
           tap(() => {
-            console.log('Item adicionado ao carrinho com sucesso');
+            confirm("Sucesso");
+           
           }),
           catchError((error) => {
             console.error('Erro ao adicionar item ao carrinho:', error);

@@ -111,3 +111,7 @@ img {
     align-items: center;
     justify-content: center;
 }
+button:focus {
+    outline: 1px solid red;
+    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.5);
+  }

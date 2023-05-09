@@ -12,6 +12,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
+import { FollowersPageComponent } from './followers-page/followers-page.component';
+import { FollowingPageComponent } from './following-page/following-page.component';
+import { LibraryComponent } from './library/library.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,9 @@ import { WishlistComponent } from './wishlist/wishlist.component';
     ItemDetailComponent,
     UserSearchComponent,
     WishlistComponent,
+    FollowersPageComponent,
+    FollowingPageComponent,
+    LibraryComponent,
   ],
   imports: [
     BrowserModule,        

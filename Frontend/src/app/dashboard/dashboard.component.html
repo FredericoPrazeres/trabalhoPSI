@@ -18,26 +18,26 @@
 <br>
 <div class="container">
   <div class="nav_menu">
-    <a class="menu_link" id="dashboard">
+    <button class="menu_link" id="dashboard">
       <h3>Dashboard</h3>
       <span class="material-symbols-rounded">chevron_right</span>
-    </a>
-    <a class="menu_link" id="perfil" (click)="getUserProfile()">
+    </button>
+    <button class="menu_link" id="perfil" (click)="getUserProfile()">
       <h3>Perfil de Utilizador</h3>
       <span class="material-symbols-rounded">chevron_right</span>
-    </a>
-    <a class="menu_link" id="perfil" (click)="searchUsers()">
+    </button>
+    <button class="menu_link" id="perfil" (click)="searchUsers()">
       <h3>Pesquisa de Utilizadores</h3>
       <span class="material-symbols-rounded">chevron_right</span>
-    </a>
-    <a class="menu_link" id="wishlist" (click)="wishlist()">
+    </button>
+    <button class="menu_link" id="wishlist" (click)="wishlist()">
       <h3>Wishlist</h3>
       <span class="material-symbols-rounded">chevron_right</span>
-    </a>
-    <a class="menu_link" id="logout" (click)="logout()">
+    </button>
+    <button class="menu_link" id="logout" (click)="logout()">
       <h3>Logout</h3>
       <span class="material-symbols-rounded">chevron_right</span>
-    </a>
+    </button>
 
   </div>
 
@@ -51,7 +51,7 @@
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.carrinho">
-          <p (click)="goItem(item)">Item: {{item}}</p>
+          <button (click)="goItem(item)">Item: {{item}}</button>
         </a>
       </div>
       <div class="users">
@@ -60,8 +60,8 @@
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.wishlist">
+          <button (click)="goItem(item)">Item: {{item}}</button>
           <button class="removerButton"(click)="removerItem(item)" >X</button>
-          <p (click)="goItem(item)">Item: {{item}}</p>
         </a>
       </div>
 
@@ -69,7 +69,7 @@
         <div class="top">
           <h4>Following</h4>
           <a class="items" *ngFor="let user of currentUser?.followingLists">
-            <p >User: {{user}}</p>
+            <button >User: {{user}}</button>
           </a>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
@@ -78,10 +78,10 @@
       <div class="followed_by">
         <div class="top">
           <h4>Followed By</h4>
-          <a class="items" *ngFor="let user of currentUser?.followerLists">
-            <p >Item: {{user}}</p>
-          </a>
           <span class="material-symbols-rounded">more_horiz</span>
+          <a class="items" *ngFor="let user of currentUser?.followerLists">
+            <button (click)="gotoUserProfile(user)">{{user}}</button><br>
+          </a>
         </div>
 
       </div>
@@ -113,7 +113,7 @@
 
         <h2>Biblioteca de items</h2>
         <a class="items" *ngFor="let item of currentUser?.library">
-          <p >Item: {{item}}</p>
+          <button (click)="goItem(item)">Item: {{item}}</button>
         </a>
         <div class="library"></div>
       </div>
