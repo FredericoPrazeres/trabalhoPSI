@@ -12,9 +12,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    profileImage: {
+    profilePicture: {
         type: String,
         required: false,
+        default: "pfp.jpg",
     },
     library: {
         type: [String],
@@ -34,11 +35,11 @@ const userSchema = new Schema({
     },
     followingLists: {
         type: [String],
-        required:false
+        required: false,
     },
     followerLists: {
         type: [String],
-        required:false
+        required: false,
     },
 });
 

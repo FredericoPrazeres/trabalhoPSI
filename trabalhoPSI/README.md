@@ -1,2 +1,0 @@
-# trabalhoPSI
-Trabalho PSI

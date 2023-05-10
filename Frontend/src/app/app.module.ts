@@ -12,6 +12,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
+import { FollowersPageComponent } from './followers-page/followers-page.component';
+import { FollowingPageComponent } from './following-page/following-page.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -24,12 +30,18 @@ import { WishlistComponent } from './wishlist/wishlist.component';
     ItemDetailComponent,
     UserSearchComponent,
     WishlistComponent,
+    FollowersPageComponent,
+    FollowingPageComponent,
+    EditProfileComponent,
   ],
   imports: [
-    BrowserModule,        
-    AppRoutingModule, 
+    BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

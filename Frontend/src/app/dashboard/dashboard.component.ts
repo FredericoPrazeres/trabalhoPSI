@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
+
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { catchError } from 'rxjs';
@@ -13,7 +13,8 @@ import { ItemService } from '../item.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  currentUser: User | undefined;
+  currentUser: User | null = null;
+  username: string | null = null;
   route: any;
 
   ufilter: string = '';
@@ -24,7 +25,24 @@ export class DashboardComponent implements OnInit {
   constructor(
     private userService: UserService,
     private itemService: ItemService
-  ) {}
+  ) {
+    this.getUserFromLocalStorage();
+  }
+
+  async getUserFromLocalStorage() {
+    const storedUser = await localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUser = JSON.parse(storedUser);
+      if (this.currentUser && this.currentUser.name) {
+        this.updateUsername(this.currentUser);
+        // Atualize o BehaviorSubject no UserService com o usuário obtido do localStorage
+        this.userService.setCurrentUser(this.currentUser);
+      } else {
+        this.username = null;
+        console.log('Nome do usuário não encontrado no localStorage');
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.itemService.getAllItems().subscribe((resd) => {
@@ -33,17 +51,29 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.userService
-      .getCurrentUser()
-      .pipe(
-        catchError((error: any) => {
-          this.userService.routeHere('/');
-          return [];
-        })
-      )
-      .subscribe((res: any) => {
-        this.currentUser = res;
-      });
+    this.userService.currentUser$.subscribe((user) => {
+      this.updateUsername(user);
+      console.log(user?.name);
+
+      this.currentUser = user;
+
+      if (user && user.name) {
+        // Adicione esta verificação
+        // Armazene o usuário no localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        // Remova o usuário do localStorage
+        localStorage.removeItem('currentUser');
+      }
+    });
+  }
+
+  updateUsername(user: User | null): void {
+    if (user) {
+      this.username = user.name;
+    } else {
+      this.username = null;
+    }
   }
 
   logout() {
@@ -56,7 +86,9 @@ export class DashboardComponent implements OnInit {
       )
       .subscribe((res: any) => {
         console.log(res.message);
-        this.currentUser = undefined;
+        this.username = null;
+
+        localStorage.removeItem('currentUser'); // Remova o usuário do localStorage
         this.userService.routeHere('/');
       });
   }
@@ -86,9 +118,9 @@ export class DashboardComponent implements OnInit {
   }
 
   wishlist() {
-    this.userService.routeHere('/wishlist/' + this.currentUser?.name);
+    this.userService.routeHere('/wishlist/' + this.username);
   }
-  removerItem(item:string){
+  removerItem(item: string) {
     this.itemService.removeItemWishlist(item);
   }
 }

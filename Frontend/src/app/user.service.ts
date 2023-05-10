@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-
 import { User } from './user';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Observable, catchError, map, mergeMap, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  mergeMap,
+  of,
+  tap,
+} from 'rxjs';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +23,26 @@ import { Router } from '@angular/router';
 export class UserService {
   allUsers: User[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
+
+  setCurrentUser(user: User | null): void {
+    this.currentUserSubject.next(user);
+  }
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private domSanitizer: DomSanitizer
+  ) {}
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
   };
+
+  private currentUsernameSource = new BehaviorSubject<string | null>(null);
+  currentUsername$ = this.currentUsernameSource.asObservable();
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.serverNodeUrl}/login`, this.httpOptions);
@@ -48,11 +70,9 @@ export class UserService {
 
   login(name: string, password: string): Observable<User> {
     const payload = { name, password };
-    return this.http.post<User>(
-      `${this.serverNodeUrl}/login`,
-      payload,
-      this.httpOptions
-    );
+    return this.http
+      .post<User>(`${this.serverNodeUrl}/login`, payload, this.httpOptions)
+      .pipe(tap((user) => this.currentUserSubject.next(user)));
   }
 
   routeHere(path: string) {
@@ -61,7 +81,8 @@ export class UserService {
 
   existsUser(username: string): Observable<boolean> {
     const dbUserObservable: Observable<User> = this.http.get<User>(
-      this.serverNodeUrl + `/user/${username}`
+      this.serverNodeUrl + `/user/${username}`,
+      this.httpOptions
     );
     return dbUserObservable.pipe(
       map((user) => true),
@@ -89,7 +110,15 @@ export class UserService {
   }
 
   logout(): Observable<any> {
-    return this.http.get(`${this.serverNodeUrl}/logout`, this.httpOptions);
+    return this.http.get(`${this.serverNodeUrl}/logout`, this.httpOptions).pipe(
+      tap(() => {
+        // Atualize o BehaviorSubject para null após o logout bem-sucedido
+        this.currentUserSubject.next(null);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        throw error;
+      })
+    );
   }
 
   getUsers(): Observable<User[]> {
@@ -103,5 +132,132 @@ export class UserService {
           throw error;
         })
       );
+  }
+
+  followUser(pageUser: string, payload: any) {
+    return this.http.post(
+      this.serverNodeUrl + '/follow/' + pageUser,
+      payload,
+      this.httpOptions
+    );
+  }
+  unfollowUser(pageUser: string, payload: any) {
+    return this.http.post(
+      this.serverNodeUrl + '/unfollow/' + pageUser,
+      payload,
+      this.httpOptions
+    );
+  }
+
+  checkUsernameAvailability(username: string): Observable<boolean> {
+    return this.http
+      .get<boolean>(
+        `${this.serverNodeUrl}/username-availability/${username}`,
+        this.httpOptions
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) {
+            return of(true);
+          } else {
+            throw error;
+          }
+        })
+      );
+  }
+
+  updateProfile(newUsername: string | null): Observable<any> {
+    return this.getCurrentUserName().pipe(
+      mergeMap((currentUsername) => {
+        const payload = {
+          currentUsername,
+          newUsername,
+        };
+
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          }),
+          withCredentials: true,
+        };
+
+        return this.http
+          .patch(
+            `${this.serverNodeUrl}/editprofile/` +
+              currentUsername +
+              `/editname`,
+            payload,
+            httpOptions
+          )
+          .pipe(
+            tap(() => {
+              if (newUsername) {
+                const currentUser = this.currentUserSubject.value;
+                if (currentUser) {
+                  currentUser.name = newUsername;
+                  this.currentUserSubject.next(currentUser);
+                  this.updateCurrentUsername(newUsername); // Adicione esta linha
+                }
+              }
+            })
+          );
+      })
+    );
+  }
+
+  updateCurrentUsername(newUsername: string) {
+    const currentUser = this.currentUserSubject.value;
+    if (currentUser) {
+      currentUser.name = newUsername;
+      this.currentUserSubject.next(currentUser);
+      this.currentUsernameSource.next(newUsername);
+
+      // Atualize o nome de usuário no localStorage
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+  }
+
+  updateProfileIcon(iconUrl: string): Observable<any> {
+    console.log('entrou no updateprofileIcon');
+    return this.getCurrentUserName().pipe(
+      mergeMap((currentUsername) => {
+        const payload = {
+          currentUsername,
+          newProfilePicture: iconUrl,
+        };
+
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          }),
+          withCredentials: true,
+        };
+
+        return this.http
+          .patch(
+            `${this.serverNodeUrl}/editprofile/` +
+              currentUsername +
+              `/editpicture`,
+            payload,
+            httpOptions
+          )
+          .pipe(
+            tap(() => {
+              const currentUser = this.currentUserSubject.value;
+              if (currentUser) {
+                currentUser.profilePicture = iconUrl;
+                this.currentUserSubject.next(currentUser);
+                localStorage.setItem(
+                  'currentUser',
+                  JSON.stringify(currentUser)
+                ); // atualiza a imagem do perfil no localStorage
+              }
+            }),
+            catchError((error: HttpErrorResponse) => {
+              throw error;
+            })
+          );
+      })
+    );
   }
 }
