@@ -52,6 +52,15 @@ export class ItemService {
     );
   }
 
+  decItemToUserCart(item: string) {
+    const payload = { itemName: item };
+    return this.http.put(
+      `${this.serverNodeUrl}/user/cart/dec/` + item,
+      payload,
+      this.httpOptions
+    );
+  }
+
   addItemToUserWishlist(item: string) {
     const payload = { name: item }; 
     return this.http.put(

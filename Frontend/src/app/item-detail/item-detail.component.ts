@@ -49,22 +49,30 @@ export class ItemDetailComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.user = res;
+        if(!this.user?.carrinho) {
+          this.user!.carrinho = []; 
+        }
       });
   }
+  
   addItemToCart() {
-    if(this.user?.carrinho.includes(this.item?.name!)){
-      alert('Já possui este item no carrinho');
-      return;
-    }
+
+    // removed! should increment instead
+    // if(this.user?.carrinho.includes(this.item?.name!)){
+    //   alert('Já possui este item no carrinho');
+    //   return;
+    // }
+
     if (this.item === undefined) {
       return;
     } else {
-      this.user?.carrinho.push(this.item.name);
+      // this.user?.carrinho.push(this.item.name); better to refresh te user. just to be sure
       this.itemService
         .addItemToUserCart(this.item.name)
         .pipe(
           tap(() => {
             alert('Sucesso');
+            this.ngOnInit();
           }),
           catchError((error) => {
             console.error('Erro ao adicionar item ao carrinho:', error);

@@ -48,10 +48,10 @@
       <div class="users">
         <div class="top">
           <h4>Carrinho</h4>
-          <span class="material-symbols-rounded">more_horiz</span>
+          <button (click)="openCarrinho()"><span class="material-symbols-rounded">more_horiz</span></button>
         </div>
         <a class="items" *ngFor="let item of currentUser?.carrinho">
-          <button (click)="goItem(item)">Item: {{item}}</button>
+          <button (click)="goItem(item)">Item: {{item.split('|')[0]}} &nbsp;&nbsp;&nbsp;&nbsp; {{item.split('|')[1]}}</button>
         </a>
       </div>
       <div class="users">
