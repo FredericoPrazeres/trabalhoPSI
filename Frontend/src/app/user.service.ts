@@ -35,6 +35,7 @@ export class UserService {
     private router: Router,
     private domSanitizer: DomSanitizer
   ) {}
+
   private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -84,6 +85,7 @@ export class UserService {
       this.serverNodeUrl + `/user/${username}`,
       this.httpOptions
     );
+
     return dbUserObservable.pipe(
       map((user) => true),
       catchError((error: HttpErrorResponse) => {

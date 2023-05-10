@@ -1,102 +1,92 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
 
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-  </head>
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
 
-  <body>
+<body>
     <br />
     <h1>Bem vindo {{ currentUser?.name }}</h1>
     <br />
     <div class="container">
-      <div class="nav_menu">
-        <a class="menu_link" id="dashboard">
+        <div class="nav_menu">
+            <button class="menu_link" id="dashboard">
           <h3>Dashboard</h3>
           <span class="material-symbols-rounded">chevron_right</span>
-        </a>
-        <a class="menu_link" id="perfil" (click)="getUserProfile()">
+        </button>
+            <button class="menu_link" id="perfil" (click)="getUserProfile()">
           <h3>Perfil de Utilizador</h3>
           <span class="material-symbols-rounded">chevron_right</span>
-        </a>
-        <a class="menu_link" id="perfil" (click)="searchUsers()">
+        </button>
+            <button class="menu_link" id="perfil-search" (click)="searchUsers()">
           <h3>Pesquisa de Utilizadores</h3>
           <span class="material-symbols-rounded">chevron_right</span>
-        </a>
-        <a class="menu_link" id="wishlist" (click)="wishlist()">
+        </button>
+            <button class="menu_link" id="wishlist" (click)="wishlist()">
           <h3>Wishlist</h3>
           <span class="material-symbols-rounded">chevron_right</span>
-        </a>
-        <a class="menu_link" id="logout" (click)="logout()">
+        </button>
+            <button class="menu_link" id="logout" (click)="logout()">
           <h3>Logout</h3>
           <span class="material-symbols-rounded">chevron_right</span>
-        </a>
-      </div>
+        </button>
+        </div>
 
-      <main>
-        <div class="dashboard">
-          <div class="users">
-            <div class="top">
-              <h4>Carrinho</h4>
-              <span class="material-symbols-rounded">more_horiz</span>
-            </div>
-            <a class="items" *ngFor="let item of currentUser?.carrinho">
-              <p (click)="goItem(item)">Item: {{ item }}</p>
-            </a>
-          </div>
-          <div class="users">
-            <div class="top">
-              <h4>Wishlist</h4>
-              <span class="material-symbols-rounded">more_horiz</span>
-            </div>
-            <a class="items" *ngFor="let item of currentUser?.wishlist">
-              <button class="removerButton" (click)="removerItem(item)">
+        <main>
+            <div class="dashboard">
+                <div class="users">
+                    <div class="top">
+                        <h4>Carrinho</h4>
+                        <button (click)="openCarrinho()">
+                <span class="material-symbols-rounded">more_horiz</span>
+              </button>
+                    </div>
+                    <a class="items" *ngFor="let item of currentUser?.carrinho">
+                        <button (click)="goItem(item)">
+                Item: {{ item.split("|")[0] }} &nbsp;&nbsp;&nbsp;&nbsp;
+                {{ item.split("|")[1] }}
+              </button>
+                    </a>
+                </div>
+                <div class="users">
+                    <div class="top">
+                        <h4>Wishlist</h4>
+                        <span class="material-symbols-rounded">more_horiz</span>
+                    </div>
+                    <a class="items" *ngFor="let item of currentUser?.wishlist">
+                        <button (click)="goItem(item)">Item: {{ item }}</button>
+                        <button class="removerButton" (click)="removerItem(item)">
                 X
               </button>
-              <p (click)="goItem(item)">Item: {{ item }}</p>
-            </a>
-          </div>
+                    </a>
+                </div>
 
-          <div class="following">
-            <div class="top">
-              <h4>Following</h4>
-              <a class="items" *ngFor="let user of currentUser?.followingLists">
-                <p>User: {{ user }}</p>
+                <div class="following">
+                    <div class="top">
+                        <h4>Following</h4>
+
+                        <span class="material-symbols-rounded">more_horiz</span>
+                    </div>
+                    <a class="items" *ngFor="let user of currentUser?.followingLists">
+                        <button>{{ user }}</button>
+                    </a>
+                </div>
+                <div class="followed_by">
+                    <div class="top">
+                        <h4>Followed By</h4>
+                        <span class="material-symbols-rounded">more_horiz</span>
+                        <a class="items" *ngFor="let user of currentUser?.followerLists">
+                            <button (click)="gotoUserProfile(user)">{{ user }}</button
+                ><br />
               </a>
-              <span class="material-symbols-rounded">more_horiz</span>
-            </div>
-          </div>
-          <div class="followed_by">
-            <div class="top">
-              <h4>Followed By</h4>
-              <a class="items" *ngFor="let user of currentUser?.followerLists">
-                <p>Item: {{ user }}</p>
-              </a>
-              <span class="material-symbols-rounded">more_horiz</span>
             </div>
           </div>
 
@@ -119,30 +109,31 @@
                 <button class="itemSearchButton" (click)="pesquisar()">
                   Pesquisar:
                 </button>
-              </form>
-            </div>
-            <p>&nbsp;</p>
-            <div *ngIf="showMessage">
-              Não existe item que corresponda a esse filtro.
-            </div>
-            <div class="item-list">
-              <ul>
-                <li *ngFor="let i of filteredItems">
-                  <button (click)="goItem(i.name)">{{ i.name }}</button>
-                </li>
-              </ul>
-            </div>
-          </div>
+                            </form>
+                    </div>
+                    <p>&nbsp;</p>
+                    <div *ngIf="showMessage">
+                        NÃ£o existe item que corresponda a esse filtro.
+                    </div>
+                    <div class="item-list">
+                        <ul>
+                            <li *ngFor="let i of filteredItems">
+                                <button (click)="goItem(i.name)">{{ i.name }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-          <div class="games_library">
-            <h2>Biblioteca de items</h2>
-            <a class="items" *ngFor="let item of currentUser?.library">
-              <p>Item: {{ item }}</p>
-            </a>
-            <div class="library"></div>
-          </div>
-        </div>
-      </main>
+                <div class="games_library">
+                    <h2>Biblioteca de items</h2>
+                    <a class="items" *ngFor="let item of currentUser?.library">
+                        <button (click)="goItem(item)">Item: {{ item }}</button>
+                    </a>
+                    <div class="library"></div>
+                </div>
+            </div>
+        </main>
     </div>
-  </body>
+</body>
+
 </html>

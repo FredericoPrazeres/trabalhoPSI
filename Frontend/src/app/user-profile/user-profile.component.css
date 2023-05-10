@@ -4,20 +4,24 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .profile {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-.button-container{
-    display:flex;
+
+.button-container {
+    display: flex;
     flex-direction: column;
     gap: 2rem;
 }
-.button-container button{
-    height:5rem;
+
+.button-container button {
+    height: 5rem;
     width: 13rem;
 }
+
 .profile-header {
     display: flex;
     align-items: center;
@@ -65,7 +69,12 @@ body {
     text-decoration: underline;
 }
 
-.button button {
+button:focus {
+    outline: 1px solid red;
+    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.5);
+}
+
+button {
     width: 10%;
     height: 2%;
     background: #0091ea;
@@ -77,4 +86,15 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 0;
+}
+
+.follow-button {
+    width: 15rem;
+    height: 4rem;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

@@ -14,10 +14,11 @@ button {
 h1{
     text-align: center;
 }
-.followers-container{
+.library-container{
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 2rem;
 }
 p{
     font-size: 2.5rem;

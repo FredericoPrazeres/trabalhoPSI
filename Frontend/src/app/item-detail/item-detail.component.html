@@ -25,7 +25,10 @@
         <li><strong>Plataforma:</strong> {{ item.platform }}</li>
         <li><strong>Idiomas:</strong> {{ item.languages }}</li>
         <li><strong>Classificação geral:</strong> {{ item.overallRating }}</li>
-        <li><strong>Avaliações:</strong> {{ item.ratings }}</li>
+        <li><strong>Avaliações:</strong> </li>
+        <li *ngFor="let rating of item.ratings">
+          <strong>Avaliação:</strong> Nome: {{ rating.name }}, Rating: {{ rating.rating }}, Comentário: {{ rating.comment }}
+        </li>
       </ul>
     </div>
 
@@ -45,7 +48,7 @@
     </div>
   </div>
   <div class="button">
-    <button type="submit" (click)="addItemToCart()">
+    <button type="button" (click)="addItemToCart()">
       Adicionar ao carrinho
     </button>
   </div>
@@ -57,6 +60,28 @@
   </div>
 
   <div class="button">
-    <button type="submit" (click)="dashboard()">dashboard</button>
+    <button type="submit" (click)="dashboard()">Dashboard</button>
   </div>
+
+  <div class="button">
+    <button type="submit" (click)="showItemInfo()">Classify Item</button>
+  </div>
+  <div id="item-info" style="display: none">
+    <label for="item-rating">Item Rating:</label>
+    <input type="radio" id="rating-1" name="item-rating" value="1">
+    <label for="rating-1">1</label>
+    <input type="radio" id="rating-2" name="item-rating" value="2">
+    <label for="rating-2">2</label>
+    <input type="radio" id="rating-3" name="item-rating" value="3">
+    <label for="rating-3">3</label>
+    <input type="radio" id="rating-4" name="item-rating" value="4">
+    <label for="rating-4">4</label>
+    <input type="radio" id="rating-5" name="item-rating" value="5">
+    <label for="rating-5">5</label><br><br>
+    <label for="item-review">Item Review:</label>
+    <textarea id="item-review" name="item-review"></textarea><br><br>
+    <button (click)="submitItemInfo()">Submit</button>
+</div>
+
+
 </div>

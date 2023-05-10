@@ -13,9 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 export class UserProfileComponent implements OnInit {
   currentUser: User | undefined;
   name: String | undefined;
+
   user: User | undefined;
   userFollowers: number = 0;
   following: boolean = false;
+
   constructor(
     private userService: UserService,
     private route: ActivatedRoute
@@ -53,6 +55,27 @@ export class UserProfileComponent implements OnInit {
   goToWishlist() {
     this.userService.routeHere('/wishlist/' + this.user?.name);
   }
+
+  unfollowUser() {
+    const pageUser = this.route.snapshot.paramMap.get('name')!;
+    const payload = { name: this.currentUser?.name };
+    this.userService.unfollowUser(pageUser, payload).subscribe((res: any) => {
+      if (res !== 'Unfollowed successfully') {
+        alert(res);
+      } else {
+        if (this.currentUser?.followingLists) {
+          this.currentUser.followingLists =
+            this.currentUser.followingLists.filter((item) => item !== pageUser);
+        }
+        this.userFollowers--;
+        this.following = false;
+      }
+    });
+  }
+
+  editProfile() {
+    this.userService.routeHere('/edit-profile/' + this.user?.name);
+  }
   followUser() {
     const pageUser = this.route.snapshot.paramMap.get('name')!;
     const payload = { name: this.currentUser?.name };
@@ -74,30 +97,13 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  unfollowUser() {
-    const pageUser = this.route.snapshot.paramMap.get('name')!;
-    const payload = { name: this.currentUser?.name };
-    this.userService.unfollowUser(pageUser, payload).subscribe((res: any) => {
-      if (res !== 'Unfollowed successfully') {
-        alert(res);
-      } else {
-        if (this.currentUser?.followingLists) {
-          this.currentUser.followingLists =
-            this.currentUser.followingLists.filter((item) => item !== pageUser);
-        }
-        this.userFollowers--;
-        this.following = false;
-      }
-    });
-  }
   goToFollowers() {
     this.userService.routeHere('/followers/' + this.user?.name);
   }
   goToFollowing() {
     this.userService.routeHere('/following/' + this.user?.name);
   }
-
-  editProfile() {
-    this.userService.routeHere('/edit-profile/' + this.user?.name);
+  goToLibrary() {
+    this.userService.routeHere('library/' + this.user?.name);
   }
 }

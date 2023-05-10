@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { catchError } from 'rxjs';
 import { Item } from '../item';
-import { Router } from '@angular/router';
 import { ItemService } from '../item.service';
 
 @Component({
@@ -120,7 +118,19 @@ export class DashboardComponent implements OnInit {
   wishlist() {
     this.userService.routeHere('/wishlist/' + this.username);
   }
-  removerItem(item: string) {
-    this.itemService.removeItemWishlist(item);
+
+  removerItem(itemName: string) {
+    this.currentUser!.wishlist = this.currentUser?.wishlist.filter(
+      (item) => item !== itemName
+    )!;
+    this.itemService.removeItemWishlist(itemName);
+  }
+  gotoUserProfile(name: string) {
+    this.userService.routeHere(`user/${name}`);
+  }
+
+  openCarrinho(): void {
+    this.userService.routeHere(`carrinho`);
+    console.log('this.userService.routeHere(`carrinho`);');
   }
 }

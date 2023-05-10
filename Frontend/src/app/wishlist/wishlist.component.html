@@ -1,7 +1,8 @@
 <h1>Minha Wishlist</h1>
-<ul>
-  <li *ngFor="let item of user?.wishlist">{{ item }}</li>
-</ul>
+<div class="wishlist-container">
+  <button (click)="goToItem(item)" *ngFor="let item of items">{{item}}</button>
+</div>
+
 <div class="button">
   <button (click)="dashboard()">Dashboard</button>
 </div>

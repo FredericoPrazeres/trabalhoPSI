@@ -9,12 +9,8 @@
     </div>
 
     <div class="profile-links">
-        <h2 class="profile-subtitle">Minha Biblioteca</h2>
-        <a *ngFor="let item of user?.library">
-            <p (click)="goToItem(item)">{{ item }}</p>
-        </a>
-
         <h2 class="profile-subtitle">Minhas Listas</h2>
+
         <div class="button-container">
             <button (click)="goToWishlist()">Wishlist</button>
             <button href="#">Listas Personalizadas</button>

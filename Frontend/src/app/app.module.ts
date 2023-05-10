@@ -17,7 +17,9 @@ import { FollowingPageComponent } from './following-page/following-page.componen
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { APP_BASE_HREF, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { LibraryComponent } from './library/library.component';
+import { CarrinhoDetailComponent } from './carrinho-detail/carrinho-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { APP_BASE_HREF, CommonModule } from '@angular/common';
     FollowersPageComponent,
     FollowingPageComponent,
     EditProfileComponent,
+    LibraryComponent,
+    CarrinhoDetailComponent,
   ],
   imports: [
     BrowserModule,

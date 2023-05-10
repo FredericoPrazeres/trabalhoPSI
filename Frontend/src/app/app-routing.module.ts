@@ -10,6 +10,8 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { FollowersPageComponent } from './followers-page/followers-page.component';
 import { FollowingPageComponent } from './following-page/following-page.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { LibraryComponent } from './library/library.component';
+import { CarrinhoDetailComponent } from './carrinho-detail/carrinho-detail.component';
 
 const routes: Routes = [
   { path: 'login-screen', component: LoginScreenComponent },
@@ -20,9 +22,11 @@ const routes: Routes = [
   { path: 'item/:name', component: ItemDetailComponent },
   { path: 'user-search', component: UserSearchComponent },
   { path: 'wishlist/:name', component: WishlistComponent },
+  { path: 'edit-profile/:user', component: EditProfileComponent },
   { path: 'followers/:name', component: FollowersPageComponent },
   { path: 'following/:name', component: FollowingPageComponent },
-  { path: 'edit-profile/:user', component: EditProfileComponent },
+  { path: 'library/:name', component: LibraryComponent },
+  { path: 'carrinho', component: CarrinhoDetailComponent },
 ];
 
 @NgModule({
