@@ -15,8 +15,9 @@ import { Item } from '../item';
 export class CarrinhoDetailComponent implements OnInit {
 
   currentUser: User | undefined;
-
+  total:number=0;
   items: Item[] = [];
+  message:string="";
 
   constructor(
     private userService: UserService,
@@ -24,6 +25,8 @@ export class CarrinhoDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.total=0;
+    this.message="Loading..."
     this.itemService.getAllItems().subscribe((resd) => {
       if (resd) {
         this.items = resd;
@@ -40,7 +43,20 @@ export class CarrinhoDetailComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.currentUser = res;
+        this.initPreco(this.currentUser!.carrinho);
       });
+  }
+
+  initPreco(carrinho:string[]){
+    for(let item of carrinho){
+      let itemName = item.split("|")[0];
+      let itemQuantity = parseInt(item.split("|")[1]);
+      this.userService.getItemPreco(itemName).subscribe((preco:number)=>{
+        this.total+=preco*itemQuantity;
+        this.message="Preço total: "+this.total;
+      });
+    }
+    
   }
 
   incItem(citem: string): void {
@@ -71,5 +87,8 @@ export class CarrinhoDetailComponent implements OnInit {
           })
         )
         .subscribe();
+  }
+  dashboard() {
+    this.userService.routeHere('/dashboard');
   }
 }

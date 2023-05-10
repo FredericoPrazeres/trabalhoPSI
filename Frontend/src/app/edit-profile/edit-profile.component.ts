@@ -38,6 +38,9 @@ export class EditProfileComponent implements OnInit {
   onIconSelected(icon: string) {
     this.selectedIcon = icon;
   }
+  isIconSelected(icon: string) {
+    return this.selectedIcon === icon;
+  }
 
   onIconSubmit() {
     if (!this.selectedIcon) {
@@ -48,7 +51,6 @@ export class EditProfileComponent implements OnInit {
     this.userService
       .updateProfileIcon(this.selectedIcon)
       .subscribe((response: any) => {
-        console.log(response);
         if (response.success) {
           alert('Ícone do perfil atualizado com sucesso!');
           if (this.user && this.selectedIcon) {

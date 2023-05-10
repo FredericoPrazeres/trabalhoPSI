@@ -213,9 +213,6 @@ export class UserService {
       currentUser.name = newUsername;
       this.currentUserSubject.next(currentUser);
       this.currentUsernameSource.next(newUsername);
-
-      // Atualize o nome de usuário no localStorage
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
     }
   }
 
@@ -249,10 +246,6 @@ export class UserService {
               if (currentUser) {
                 currentUser.profilePicture = iconUrl;
                 this.currentUserSubject.next(currentUser);
-                localStorage.setItem(
-                  'currentUser',
-                  JSON.stringify(currentUser)
-                ); // atualiza a imagem do perfil no localStorage
               }
             }),
             catchError((error: HttpErrorResponse) => {
@@ -261,5 +254,8 @@ export class UserService {
           );
       })
     );
+  }
+  getItemPreco(item:string){
+    return this.http.get<number>(`${this.serverNodeUrl}/itemprice/${item}`,this.httpOptions);
   }
 }
