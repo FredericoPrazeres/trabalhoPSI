@@ -10,6 +10,7 @@ import { UserService } from '../user.service';
 export class FollowersPageComponent implements OnInit {
   followers:string[]=[];
   name:string="";
+  message:string="";
 
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +22,9 @@ export class FollowersPageComponent implements OnInit {
     this.name=userName;
     this.userService.getUser(userName).pipe().subscribe(res=>{
       this.followers=res.followerLists;
+      if (res.followerLists.length==0){
+        this.message=`O ${this.name} não tem seguidores.`
+      }
     });
   }
   dashboard() {
