@@ -360,4 +360,42 @@ app.get("/logout", async (req, res) => {
   });
 });
 
+app.put("/item/rating/:name",validatePayloadMiddleware, async (req, res) => {
+
+  const { userName, rating, comment } = req.body;
+
+  var existingItem;
+
+  // find the item with the matching name in the database
+  await Item.findOne({ name: req.params.name }).then((item) => {
+
+    const userReviewed = item.ratings.find(rating => rating.name === req.body.name);
+
+    if (userReviewed) {
+      // User has already reviewed the item
+      res.status(401).send({ errorMessage: "User already reviewed the item!" });
+    }
+    existingItem = item;
+    item.ratings.push({
+      name: req.body.name,
+      rating: rating,
+      comment: comment
+    });
+
+    const sum = item.ratings.reduce((acc, rating) => acc + rating.rating, 0);
+    // Update the overallrating property of the item object
+    item.overallRating = sum / item.ratings.length;
+
+    item.save();
+  });
+
+  if (existingItem === null) {
+    return res.status(400).json({ error: "Item doesnt exist" });
+  }else{
+    return res.json();
+  }
+
+});
+
+
 app.listen(3058, () => console.log(`Express server running on port 3058`));

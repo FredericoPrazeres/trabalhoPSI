@@ -26,7 +26,7 @@
       <h3>Perfil de Utilizador</h3>
       <span class="material-symbols-rounded">chevron_right</span>
     </button>
-    <button class="menu_link" id="perfil" (click)="searchUsers()">
+    <button class="menu_link" id="perfil-search" (click)="searchUsers()">
       <h3>Pesquisa de Utilizadores</h3>
       <span class="material-symbols-rounded">chevron_right</span>
     </button>
@@ -68,11 +68,12 @@
       <div class="following">
         <div class="top">
           <h4>Following</h4>
-          <a class="items" *ngFor="let user of currentUser?.followingLists">
-            <button >User: {{user}}</button>
-          </a>
+
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
+        <a class="items" *ngFor="let user of currentUser?.followingLists">
+          <button >{{user}}</button>
+        </a>
 
       </div>
       <div class="followed_by">
