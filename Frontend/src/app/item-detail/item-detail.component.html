@@ -63,9 +63,6 @@
     <button type="submit" (click)="showItemInfo()">Classify Item</button>
   </div>
 
-  <div class="button">
-    <button type="submit" (click)="dashboard()">Dashboard</button>
-  </div>
   <div id="item-info" style="display: none">
     <label for="item-rating">Item Rating:</label>
     <input type="radio" id="rating-1" name="item-rating" value="1">
@@ -81,7 +78,12 @@
     <label for="item-review">Item Review:</label>
     <textarea id="item-review" name="item-review"></textarea><br><br>
     <button (click)="submitItemInfo()">Submit</button>
-</div>
+  </div>
+
+  <div class="button">
+    <button type="submit" (click)="dashboard()">Dashboard</button>
+  </div>
+  
 
 
 </div>

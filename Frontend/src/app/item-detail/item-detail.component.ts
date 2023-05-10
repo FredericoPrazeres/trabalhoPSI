@@ -117,22 +117,48 @@ export class ItemDetailComponent implements OnInit {
 				itemInfo.style.display = "none";
 			}
   }
+
+  closeItemInfo(){
+    var itemInfo = document.getElementById("item-info");
+    if(!itemInfo){
+      return;
+    }
+
+    if (itemInfo.style.display === "block") {
+      itemInfo.style.display = "none";
+    }
+
+  }
   
  submitItemInfo() {
   var itemRating = (<HTMLInputElement>document.querySelector('input[name="item-rating"]:checked')).value;
   var itemReview = (<HTMLInputElement>document.getElementById("item-review")).value;
   var userName = this.user?.name;
+  
+  // User só pode classificar o item uma vez
+  if(this.item?.ratings){
+    for(var rating of this.item?.ratings){
+      if(rating.name===userName){
+        this.closeItemInfo();
+        alert("User already reviewed this item!");
+        return;
+      }
+  }
+  }
+
   if (typeof userName ==="string"){
     if(typeof this.item?.name ==="string"){
-      console.log("USER "+userName);
-      console.log("Item name: "+this.item?.name)
-      console.log("Item Rating: " + itemRating);
-      console.log("Item Review: " + itemReview);
       this.itemService.updateItemRating(this.item?.name,userName,parseInt(itemRating),itemReview);
+      const rat = {
+        name:userName,
+        rating: parseInt(itemRating),
+        comment:itemReview
+      }
+      this.item.ratings.push(rat);
+      alert("Obrigado pela sua classificação!");
     }
       
   }
-    // do whatever you want with the data here
   }
 
 
