@@ -95,4 +95,10 @@ export class DashboardComponent implements OnInit {
   gotoUserProfile(name:string){
     this.userService.routeHere(`user/${name}`);
   }
+
+  openCarrinho(): void {
+    this.userService.routeHere(`carrinho`);
+    console.log("this.userService.routeHere(`carrinho`);");
+  }
 }
+

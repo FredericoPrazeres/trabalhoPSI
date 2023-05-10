@@ -9,6 +9,7 @@ var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
 app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
+//app.use(cors({ origin: "*/*"}));
 app.use(bodyParser.json());
 
 mongoDbUrl =
@@ -259,6 +260,8 @@ app.put("/user/wishlist/:name", async (req, res) => {
 });
 
 app.put("/user/cart/:name", async (req, res) => {
+  //console.log("AQUI");
+  
   var existingItem;
 
   await Item.findOne({ name: req.params.name }).then((item) => {
@@ -267,10 +270,69 @@ app.put("/user/cart/:name", async (req, res) => {
   if (existingItem === null) {
     return res.status(400).json({ error: "Item doesnt exist" });
   }
+  //console.log("AQUI");
+  // Nao encontra
+  console.log("Req: "+req.session.user.name);
 
   await User.findOne({ name: req.session.user.name })
     .then(async (user) => {
-      user.carrinho.push(existingItem.name);
+      if(!user) {
+        return res.status(400).json({ error: "User is not defined!" });
+      }
+      if(!user.carrinho)
+        user.carrinho = [];
+      // console.log("AQUI");
+      if (user.carrinho.some(i => i.includes(existingItem.name))) {
+        let carrinho_item = user.carrinho.find(i => i.includes(existingItem.name));
+        let strs = carrinho_item.split('|');
+        if (strs.length == 1) strs.push('1'); // no caso de não ter sido bem feito à primeira vez
+        strs[1] = strs[1]*1 + 1;
+        user.carrinho = user.carrinho.filter(i => i != carrinho_item);
+        user.carrinho.push(strs[0]+'|'+strs[1]);
+      } else {
+        user.carrinho.push(existingItem.name + "|1");
+      }
+      await user.save();
+      req.session.user = user;
+      res.json();
+    })
+    .catch((err) => {
+      res.status(500).send(err.message);
+    });
+});
+
+app.put("/user/cart/dec/:name", async (req, res) => {
+
+  //console.log("AQUI");
+  // Nao encontra
+  console.log("Req: "+req.session.user.name);
+
+  await User.findOne({ name: req.session.user.name })
+    .then(async (user) => {
+      if(!user) {
+        return res.status(400).json({ error: "User is not defined!" });
+      }
+      if(!user.carrinho)
+        user.carrinho = [];
+      // console.log("AQUI");
+      if (user.carrinho.some(i => i.includes(req.params.name))) {
+        let carrinho_item = user.carrinho.find(i => i.includes(req.params.name));
+        let strs = carrinho_item.split('|');
+        if (strs.length == 1) strs.push('1'); // no caso de não ter sido bem feito à primeira vez
+        strs[1] = strs[1]*1 - 1;
+
+        if (strs[1] == 0) {
+          user.carrinho = user.carrinho.filter(i => i != carrinho_item);  
+        }
+        else {
+          user.carrinho = user.carrinho.filter(i => i != carrinho_item);
+          user.carrinho.push(strs[0]+'|'+strs[1]);
+        }
+        
+      } else {
+        res.json();
+        return;  
+      }
       await user.save();
       req.session.user = user;
       res.json();
