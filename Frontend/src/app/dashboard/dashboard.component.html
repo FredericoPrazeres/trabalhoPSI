@@ -18,21 +18,26 @@
 <br>
 <div class="container">
   <div class="nav_menu">
-    <a class="menu_link" id="dashboard">
+    <button class="menu_link" id="dashboard">
       <h3>Dashboard</h3>
-    </a>
-    <a class="menu_link" id="perfil" (click)="getUserProfile()">
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
+    <button class="menu_link" id="perfil" (click)="getUserProfile()">
       <h3>Perfil de Utilizador</h3>
-    </a>
-    <a class="menu_link" id="perfil" (click)="searchUsers()">
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
+    <button class="menu_link" id="perfil" (click)="searchUsers()">
       <h3>Pesquisa de Utilizadores</h3>
-    </a>
-    <a class="menu_link" id="wishlist" (click)="wishlist()">
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
+    <button class="menu_link" id="wishlist" (click)="wishlist()">
       <h3>Wishlist</h3>
-    </a>
-    <a class="menu_link" id="logout" (click)="logout()">
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
+    <button class="menu_link" id="logout" (click)="logout()">
       <h3>Logout</h3>
-    </a>
+      <span class="material-symbols-rounded">chevron_right</span>
+    </button>
 
   </div>
 
@@ -43,39 +48,40 @@
       <div class="users">
         <div class="top">
           <h4>Carrinho</h4>
+          <span class="material-symbols-rounded">more_horiz</span>
         </div>
-          <a class="items" *ngFor="let item of currentUser?.carrinho">
-            <p (click)="goItem(item)">Item: {{item}}</p>
-          </a>
+        <a class="items" *ngFor="let item of currentUser?.carrinho">
+          <button (click)="goItem(item)">Item: {{item}}</button>
+        </a>
       </div>
       <div class="users">
         <div class="top">
           <h4>Wishlist</h4>
+          <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.wishlist">
+          <button (click)="goItem(item)">Item: {{item}}</button>
           <button class="removerButton"(click)="removerItem(item)" >X</button>
-          <p (click)="goItem(item)">Item: {{item}}</p>
         </a>
       </div>
 
       <div class="following">
         <div class="top">
           <h4>Following</h4>
-          <br>
           <a class="items" *ngFor="let user of currentUser?.followingLists">
-            <p >User: {{user}}</p>
+            <button >User: {{user}}</button>
           </a>
-          
+          <span class="material-symbols-rounded">more_horiz</span>
         </div>
 
       </div>
       <div class="followed_by">
         <div class="top">
           <h4>Followed By</h4>
-          <a class="items" *ngFor="let user of currentUser?.followerLists">
-            <p >Item: {{user}}</p>
-          </a>
           <span class="material-symbols-rounded">more_horiz</span>
+          <a class="items" *ngFor="let user of currentUser?.followerLists">
+            <button (click)="gotoUserProfile(user)">{{user}}</button><br>
+          </a>
         </div>
 
       </div>
@@ -89,7 +95,7 @@
                 <div class="form-group">
                     <label for="ufilter"> Item Name</label>
                     <input type="text" class="form-control" id="ufilter" name="ufilter" required [(ngModel)]="ufilter">
-    
+
                 </div>
                 <button class="itemSearchButton"(click)="pesquisar()"> Pesquisar:</button>
             </form>
@@ -107,7 +113,7 @@
 
         <h2>Biblioteca de items</h2>
         <a class="items" *ngFor="let item of currentUser?.library">
-          <p >Item: {{item}}</p>
+          <button (click)="goItem(item)">Item: {{item}}</button>
         </a>
         <div class="library"></div>
       </div>

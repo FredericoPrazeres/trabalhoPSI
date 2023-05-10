@@ -14,6 +14,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { FollowersPageComponent } from './followers-page/followers-page.component';
 import { FollowingPageComponent } from './following-page/following-page.component';
+import { LibraryComponent } from './library/library.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +29,11 @@ import { FollowingPageComponent } from './following-page/following-page.componen
     WishlistComponent,
     FollowersPageComponent,
     FollowingPageComponent,
+    LibraryComponent,
   ],
   imports: [
-    BrowserModule,        
-    AppRoutingModule, 
+    BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     FormsModule
   ],

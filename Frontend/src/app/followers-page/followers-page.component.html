@@ -1,6 +1,7 @@
 <h1>Lista de seguidores do {{name}}</h1>
 <div class="followers-container">
-    <p *ngFor="let follower of followers">{{follower}}</p>
+    {{message}}
+    <button (click)="goToUser(follower)"*ngFor="let follower of followers">{{follower}}</button>
 </div>
 
 <div class="button">

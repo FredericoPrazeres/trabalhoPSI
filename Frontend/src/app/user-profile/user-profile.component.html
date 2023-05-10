@@ -4,22 +4,19 @@
         user.profilePictureUrl ||
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
       " alt="" />
-        <div>
+        <div class="profile-container">
             <h1 class="profile-name">{{ user.name }}</h1>
-            <button *ngIf="!following" (click)="followUser()">Follow</button>
-            <button *ngIf="following" (click)="unfollowUser()">Unfollow</button>
+            <button class="follow-button" *ngIf="!following" (click)="followUser()">Follow</button>
+            <button class="follow-button" *ngIf="following" (click)="unfollowUser()">Unfollow</button>
         </div>
 
     </div>
 
     <div class="profile-links">
-        <h2 class="profile-subtitle">Minha Biblioteca</h2>
-        <a *ngFor="let item of user?.library">
-            <p (click)="goToItem(item)">{{ item }}</p>
-        </a>
 
         <h2 class="profile-subtitle">Minhas Listas</h2>
         <div class ="button-container">
+            <button (click)="goToLibrary()">Minha Biblioteca</button>
             <button (click)="goToWishlist()">Wishlist</button>
             <button href="#">Listas Personalizadas</button>
             <button (click)="goToFollowers()">Seguidores: {{userFollowers}}</button>

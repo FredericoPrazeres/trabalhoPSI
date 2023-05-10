@@ -85,7 +85,7 @@ export class UserProfileComponent implements OnInit {
       }else{
         if (this.currentUser?.followingLists) {
           this.currentUser.followingLists = this.currentUser.followingLists.filter(item => item !== pageUser);
-        }        
+        }
         this.userFollowers--;
         this.following=false;
       }
@@ -96,6 +96,9 @@ export class UserProfileComponent implements OnInit {
   }
   goToFollowing(){
     this.userService.routeHere('/following/'+this.user?.name);
+  }
+  goToLibrary(){
+    this.userService.routeHere('library/'+this.user?.name);
   }
 
 }

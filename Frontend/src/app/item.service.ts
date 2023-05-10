@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EMPTY, Observable, catchError, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { Item } from './item';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +44,7 @@ export class ItemService {
     );
   }
   addItemToUserCart(item: string) {
-    const payload = { itemName: item }; // Modifique esta linha se necessário
+    const payload = { itemName: item };
     return this.http.put(
       `${this.serverNodeUrl}/user/cart/` + item,
       payload,
@@ -52,7 +53,7 @@ export class ItemService {
   }
 
   addItemToUserWishlist(item: string) {
-    const payload = { name: item }; // Modifique esta linha se necessário
+    const payload = { name: item }; 
     return this.http.put(
       `${this.serverNodeUrl}/user/wishlist/` + item,
       payload,
@@ -69,8 +70,10 @@ export class ItemService {
           return EMPTY;
         }))
         .toPromise();
+        return true;
     } catch (error) {
       console.error('Error removing item from wishlist:', error);
+      return false;
     }
   }
 

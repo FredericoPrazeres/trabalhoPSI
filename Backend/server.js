@@ -8,7 +8,7 @@ var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
-app.use(cors({ origin: ["http://localhost:4200"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
@@ -155,7 +155,7 @@ app.get("/item/:name", async (req, res) => {
 
 app.delete("/user/wishlist/:name",async(req,res)=>{
   var existingItem;
-
+  const user = req.body;
   await Item.findOne({ name: req.params.name }).then((item) => {
     existingItem = item;
   });
@@ -358,46 +358,6 @@ app.get("/logout", async (req, res) => {
       res.send({ message: "Logged out" });
     }
   });
-});
-
-
-app.put("/item/rating/:name",validatePayloadMiddleware, async (req, res) => {
-
-  const { userName, rating, comment } = req.body;
-
-  var existingItem;
-
-  // find the item with the matching name in the database
-  await Item.findOne({ name: req.params.name }).then((item) => {
-
-  const userReviewed = item.ratings.find(rating => rating.name === req.body.name);
-
-  if (userReviewed) {
-    // User has already reviewed the item
-    res.status(401).send({ errorMessage: "User already reviewed the item!" });
-  }
-    existingItem = item;
-    item.ratings.push({
-      name: req.body.name,
-      rating: rating,
-      comment: comment
-    });
-
-    const sum = item.ratings.reduce((acc, rating) => acc + rating.rating, 0);
-    const overallrating = sum / item.ratings.length;
-    
-    // Update the overallrating property of the item object
-    item.overallRating = overallrating;
-
-   item.save();
-  });
-
-  if (existingItem === null) {
-    return res.status(400).json({ error: "Item doesnt exist" });
-  }else{
-    return res.json();
-  }
-
 });
 
 app.listen(3058, () => console.log(`Express server running on port 3058`));

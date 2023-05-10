@@ -58,7 +58,7 @@ h3{
   padding-bottom: 15px;
 }
 
-.nav_menu a{
+.nav_menu button{
   display: flex;
   margin: 5px;
   margin-bottom: 40px;
@@ -72,8 +72,13 @@ h3{
   color:white;
 }
 
-.nav_menu a:hover{
+.nav_menu button:hover{
   cursor: pointer;
+  border:1px solid black;
+}
+button:focus {
+  outline: 1px solid red;
+  box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.5);
 }
 
 .nav_menu h3{
@@ -133,14 +138,6 @@ main{
   background: #ececec;
   padding: 10px;
   border-radius: 25px;
-}
-
-.dashboard > div .top{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .dashboard > div .middle{
@@ -206,4 +203,10 @@ p:hover{
 p{
   float: left;
 }
-
+.items{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+}
