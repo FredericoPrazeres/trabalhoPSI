@@ -23,24 +23,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private userService: UserService,
     private itemService: ItemService
-  ) {
-    this.getUserFromLocalStorage();
-  }
+  ) {}
 
-  async getUserFromLocalStorage() {
-    const storedUser = await localStorage.getItem('currentUser');
-    if (storedUser) {
-      this.currentUser = JSON.parse(storedUser);
-      if (this.currentUser && this.currentUser.name) {
-        this.updateUsername(this.currentUser);
-        // Atualize o BehaviorSubject no UserService com o usuário obtido do localStorage
-        this.userService.setCurrentUser(this.currentUser);
-      } else {
-        this.username = null;
-        console.log('Nome do usuário não encontrado no localStorage');
-      }
-    }
-  }
 
   ngOnInit(): void {
     this.itemService.getAllItems().subscribe((resd) => {
@@ -49,20 +33,16 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.userService.currentUser$.subscribe((user) => {
-      this.updateUsername(user);
-      console.log(user?.name);
-
-      this.currentUser = user;
-
-      if (user && user.name) {
-        // Adicione esta verificação
-        // Armazene o usuário no localStorage
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      } else {
-        // Remova o usuário do localStorage
-        localStorage.removeItem('currentUser');
-      }
+    this.userService
+    .getCurrentUser()
+    .pipe(
+      catchError((error: any) => {
+        this.userService.routeHere('/');
+        return [];
+      })
+    )
+    .subscribe((res: any) => {
+      this.currentUser = res;
     });
   }
 
@@ -83,10 +63,7 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log(res.message);
         this.username = null;
-
-        localStorage.removeItem('currentUser'); // Remova o usuário do localStorage
         this.userService.routeHere('/');
       });
   }
@@ -112,6 +89,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goItem(name: string): void {
+    name = name.split("|")[0]
     this.userService.routeHere('/item/' + name);
   }
 
@@ -126,11 +104,11 @@ export class DashboardComponent implements OnInit {
     this.itemService.removeItemWishlist(itemName);
   }
   gotoUserProfile(name: string) {
+    console.log(name);
     this.userService.routeHere(`user/${name}`);
   }
 
   openCarrinho(): void {
     this.userService.routeHere(`carrinho`);
-    console.log('this.userService.routeHere(`carrinho`);');
   }
 }

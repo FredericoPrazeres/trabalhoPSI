@@ -60,3 +60,23 @@ body {
   align-items: center;
   justify-content: center;
 }
+.icons-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.icons-display img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 2px solid transparent;
+}
+
+.icons-display img:focus {
+  border-color: blue;
+  outline: none;
+}
+img.selected {
+  border: 2px solid red;
+}

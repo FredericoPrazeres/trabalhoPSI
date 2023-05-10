@@ -44,10 +44,8 @@
             <div class="dashboard">
                 <div class="users">
                     <div class="top">
-                        <h4>Carrinho</h4>
-                        <button (click)="openCarrinho()">
+                        <h4>Carrinho<button class="verCarrinho" (click)="openCarrinho()">Ver carrinho</button></h4>                                             
                 <span class="material-symbols-rounded">more_horiz</span>
-              </button>
                     </div>
                     <a class="items" *ngFor="let item of currentUser?.carrinho">
                         <button (click)="goItem(item)">
@@ -68,7 +66,6 @@
               </button>
                     </a>
                 </div>
-
                 <div class="following">
                     <div class="top">
                         <h4>Following</h4>
@@ -76,7 +73,7 @@
                         <span class="material-symbols-rounded">more_horiz</span>
                     </div>
                     <a class="items" *ngFor="let user of currentUser?.followingLists">
-                        <button>{{ user }}</button>
+                        <button (click)="gotoUserProfile(user)">{{ user }}</button>
                     </a>
                 </div>
                 <div class="followed_by">
@@ -113,7 +110,7 @@
                     </div>
                     <p>&nbsp;</p>
                     <div *ngIf="showMessage">
-                        NÃ£o existe item que corresponda a esse filtro.
+                        Não existe item que corresponda a esse filtro.
                     </div>
                     <div class="item-list">
                         <ul>

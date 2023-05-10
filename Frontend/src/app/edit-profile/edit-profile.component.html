@@ -23,7 +23,7 @@
         <div class="form-group">
             <label>Ícones de perfil:</label>
             <div class="icons-display">
-                <img [src]="'assets/icons/icon1.png'" alt="" (click)="onIconSelected('icon1.png')" />
+                <img [src]="'assets/icons/icon1.png'" alt="" (click)="onIconSelected('icon1.png')" [ngClass]="{'selected': selectedIcon === 'icon1.png'}"/>
                 <img [src]="'assets/icons/icon2.png'" alt="" (click)="onIconSelected('icon2.png')" />
                 <img [src]="'assets/icons/icon3.png'" alt="" (click)="onIconSelected('icon3.png')" />
                 <img [src]="'assets/icons/icon4.png'" alt="" (click)="onIconSelected('icon4.png')" />

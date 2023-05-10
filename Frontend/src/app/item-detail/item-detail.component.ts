@@ -60,16 +60,9 @@ export class ItemDetailComponent implements OnInit {
   
   addItemToCart() {
 
-    // removed! should increment instead
-    // if(this.user?.carrinho.includes(this.item?.name!)){
-    //   alert('Já possui este item no carrinho');
-    //   return;
-    // }
-
     if (this.item === undefined) {
       return;
     } else {
-      // this.user?.carrinho.push(this.item.name); better to refresh te user. just to be sure
       this.itemService
         .addItemToUserCart(this.item.name)
         .pipe(
@@ -88,13 +81,13 @@ export class ItemDetailComponent implements OnInit {
 
   addItemToWishlist() {
     if(this.user?.wishlist.includes(this.item?.name!)){
+      window.close();
       alert('Já possui este item na wishlist');
       return;
     }
     if (this.item === undefined) {
       return;
     } else {
-      this.user?.wishlist.push(this.item.name);
       this.itemService
         .addItemToUserWishlist(this.item.name)
         .pipe(

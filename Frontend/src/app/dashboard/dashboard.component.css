@@ -224,3 +224,12 @@ div.item-list{
   padding-top: 10px;
   padding-bottom: 20px;
 }
+.verCarrinho{
+  height:1.5rem;
+  background-color: #0091ea;
+  width: 5.59rem;
+  color: white;
+  font-size: 1rem;
+  margin-left:3rem;
+  border-radius: 2px;
+}

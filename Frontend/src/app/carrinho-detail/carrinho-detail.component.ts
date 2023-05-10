@@ -72,4 +72,7 @@ export class CarrinhoDetailComponent implements OnInit {
         )
         .subscribe();
   }
+  dashboard() {
+    this.userService.routeHere('/dashboard');
+  }
 }
