@@ -16,7 +16,7 @@ export class UserService {
   allUsers: User[] = [];
 
   constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
@@ -62,7 +62,7 @@ export class UserService {
   existsUser(username: string): Observable<boolean> {
     const dbUserObservable: Observable<User> = this.http.get<User>(
       this.serverNodeUrl + `/user/${username}`
-    );
+      ,this.httpOptions);
     return dbUserObservable.pipe(
       map((user) => true),
       catchError((error: HttpErrorResponse) => {
@@ -103,5 +103,12 @@ export class UserService {
           throw error;
         })
       );
+  }
+
+  followUser(pageUser: string,payload:any) {
+    return this.http.post(this.serverNodeUrl+"/follow/"+pageUser,payload,this.httpOptions);
+  }
+  unfollowUser(pageUser:string,payload:any){
+    return this.http.post(this.serverNodeUrl+"/unfollow/"+pageUser,payload,this.httpOptions);
   }
 }

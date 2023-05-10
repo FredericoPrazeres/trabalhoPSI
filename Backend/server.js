@@ -8,11 +8,11 @@ var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
 
-app.use(cors({ origin: ["http://appserver.alunos.di.fc.ul.pt:3008"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:4200"], credentials: true }));
 app.use(bodyParser.json());
 
 mongoDbUrl =
-"mongodb://psi008:psi008@localhost:27017/psi008?retryWrites=true&authSource=psi008";
+"mongodb+srv://fredprazeres10:Aguadestilada1@basededados.zyckr6w.mongodb.net/TrabalhoPSI?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDbUrl);
 
@@ -56,6 +56,88 @@ app.get("/users", async (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+
+app.post('/follow/:name', async (req, res) => {
+  try {
+    const targetUserName = req.params.name;
+    const sessionUserName = req.body.name;
+
+    const currentUser = await User.findOne({ name: sessionUserName });
+    const targetUser = await User.findOne({ name: targetUserName });
+
+    if (!targetUser) {
+      return res.status(404).json('User not found');
+    }
+
+    targetUser.followerLists.push(currentUser.name);
+    currentUser.followingLists.push(targetUser.name);
+
+    await targetUser.save();
+    await currentUser.save();
+
+    req.session.user = currentUser;
+
+    res.json('Followed successfully');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+app.get('/followers/:name', async (req, res) => {
+  const user = await User.findOne({ name: req.params.name });
+  
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  
+  const followers = user.followerLists;
+  return res.status(200).json({ followers: followers });
+});
+app.get('/following/:name', async (req, res) => {
+  const user = await User.findOne({ name: req.params.name });
+  
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  
+  const following = user.followingLists;
+  return res.status(200).json({ following: following });
+});
+
+
+app.post('/unfollow/:name', async (req, res) => {
+  try {
+    const targetUserName = req.params.name;
+    const sessionUserName = req.body.name;
+
+    const currentUser = await User.findOne({ name: sessionUserName });
+    const targetUser = await User.findOne({ name: targetUserName });
+
+    if (!targetUser) {
+      return res.status(404).json('User not found');
+    }
+
+    targetUser.followerLists = targetUser.followerLists.filter(
+      (follower) => follower !== currentUser.name
+    );
+    currentUser.followingLists = currentUser.followingLists.filter(
+      (following) => following !== targetUser.name
+    );
+
+    await targetUser.save();
+    await currentUser.save();
+
+    req.session.user = currentUser;
+
+    res.json('Unfollowed successfully');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+
+
+
 
 app.get("/item/:name", async (req, res) => {
   await Item.findOne({ name: req.params.name })
@@ -191,6 +273,7 @@ app.put("/user/cart/:name", async (req, res) => {
       user.carrinho.push(existingItem.name);
       await user.save();
       req.session.user = user;
+      res.json();
     })
     .catch((err) => {
       res.status(500).send(err.message);
@@ -275,6 +358,46 @@ app.get("/logout", async (req, res) => {
       res.send({ message: "Logged out" });
     }
   });
+});
+
+
+app.put("/item/rating/:name",validatePayloadMiddleware, async (req, res) => {
+
+  const { userName, rating, comment } = req.body;
+
+  var existingItem;
+
+  // find the item with the matching name in the database
+  await Item.findOne({ name: req.params.name }).then((item) => {
+
+  const userReviewed = item.ratings.find(rating => rating.name === req.body.name);
+
+  if (userReviewed) {
+    // User has already reviewed the item
+    res.status(401).send({ errorMessage: "User already reviewed the item!" });
+  }
+    existingItem = item;
+    item.ratings.push({
+      name: req.body.name,
+      rating: rating,
+      comment: comment
+    });
+
+    const sum = item.ratings.reduce((acc, rating) => acc + rating.rating, 0);
+    const overallrating = sum / item.ratings.length;
+    
+    // Update the overallrating property of the item object
+    item.overallRating = overallrating;
+
+   item.save();
+  });
+
+  if (existingItem === null) {
+    return res.status(400).json({ error: "Item doesnt exist" });
+  }else{
+    return res.json();
+  }
+
 });
 
 app.listen(3058, () => console.log(`Express server running on port 3058`));

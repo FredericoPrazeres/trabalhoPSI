@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WishlistService {
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
@@ -17,16 +17,16 @@ export class WishlistService {
 
   getItems(): Observable<Item[]> {
     const url = `${this.serverNodeUrl}/wishlist/`;
-    return this.http.get<Item[]>(url);
+    return this.http.get<Item[]>(url,this.httpOptions);
   }
 
   addItem(itemName: string): Observable<any> {
     const url = `${this.serverNodeUrl}/wishlist`;
-    return this.http.post(url, { itemName });
+    return this.http.post(url, { itemName },this.httpOptions);
   }
 
   removeItem(itemId: string): Observable<any> {
     const url = `${this.serverNodeUrl}/wishlist/${itemId}`;
-    return this.http.delete(url);
+    return this.http.delete(url,this.httpOptions);
   }
 }

@@ -9,19 +9,19 @@ import { Item } from './item';
 })
 export class ItemService {
   constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
+  private serverNodeUrl = 'http://localhost:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
   };
 
   getAllItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.serverNodeUrl + '/items');
+    return this.http.get<Item[]>(this.serverNodeUrl + '/items',this.httpOptions);
   }
 
   getItemById(id: string): Observable<Item> {
     const url = `${this.serverNodeUrl}/items${id}`;
-    return this.http.get<Item>(url);
+    return this.http.get<Item>(url,this.httpOptions);
   }
 
   getItemDetailsById(id: string, token: string): Observable<Item> {
@@ -31,6 +31,7 @@ export class ItemService {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       }),
+         withCredentials:true,
     };
     return this.http.get<Item>(url, httpOptions);
   }
@@ -72,4 +73,15 @@ export class ItemService {
       console.error('Error removing item from wishlist:', error);
     }
   }
+
+  updateItemRating(itemName: string, userName:string,rating:number,comment:string) {
+    const payload={ name: userName,rating: rating,comment: comment};
+
+    return this.http.put(
+      `${this.serverNodeUrl}/item/rating/` + itemName,
+      payload,
+      this.httpOptions
+    ).subscribe();
+  }
+
 }

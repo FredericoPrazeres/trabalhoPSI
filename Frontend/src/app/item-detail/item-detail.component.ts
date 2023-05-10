@@ -6,7 +6,8 @@ import { Item } from '../item';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-item-detail',
@@ -17,8 +18,10 @@ export class ItemDetailComponent implements OnInit {
   item: Item | undefined;
   name: String | undefined;
   user: User | undefined;
+  private apiUrl = '127.0.0.1:3058';
 
   constructor(
+    private http: HttpClient,
     private route: ActivatedRoute,
     private itemService: ItemService,
     private userService: UserService
@@ -89,4 +92,37 @@ export class ItemDetailComponent implements OnInit {
         .subscribe();
     }
   }
+
+
+  showItemInfo(){
+    var itemInfo = document.getElementById("item-info");
+    if(!itemInfo){
+      return;
+    }
+
+			if (itemInfo.style.display === "none") {
+				itemInfo.style.display = "block";
+			} else {
+				itemInfo.style.display = "none";
+			}
+  }
+  
+ submitItemInfo() {
+  var itemRating = (<HTMLInputElement>document.querySelector('input[name="item-rating"]:checked')).value;
+  var itemReview = (<HTMLInputElement>document.getElementById("item-review")).value;
+  var userName = this.user?.name;
+  if (typeof userName ==="string"){
+    if(typeof this.item?.name ==="string"){
+      console.log("USER "+userName);
+      console.log("Item name: "+this.item?.name)
+      console.log("Item Rating: " + itemRating);
+      console.log("Item Review: " + itemReview);
+      this.itemService.updateItemRating(this.item?.name,userName,parseInt(itemRating),itemReview);
+    }
+      
+  }
+    // do whatever you want with the data here
+  }
+
+
 }

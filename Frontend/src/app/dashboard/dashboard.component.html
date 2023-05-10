@@ -20,23 +20,18 @@
   <div class="nav_menu">
     <a class="menu_link" id="dashboard">
       <h3>Dashboard</h3>
-      <span class="material-symbols-rounded">chevron_right</span>
     </a>
     <a class="menu_link" id="perfil" (click)="getUserProfile()">
       <h3>Perfil de Utilizador</h3>
-      <span class="material-symbols-rounded">chevron_right</span>
     </a>
     <a class="menu_link" id="perfil" (click)="searchUsers()">
       <h3>Pesquisa de Utilizadores</h3>
-      <span class="material-symbols-rounded">chevron_right</span>
     </a>
     <a class="menu_link" id="wishlist" (click)="wishlist()">
       <h3>Wishlist</h3>
-      <span class="material-symbols-rounded">chevron_right</span>
     </a>
     <a class="menu_link" id="logout" (click)="logout()">
       <h3>Logout</h3>
-      <span class="material-symbols-rounded">chevron_right</span>
     </a>
 
   </div>
@@ -48,16 +43,14 @@
       <div class="users">
         <div class="top">
           <h4>Carrinho</h4>
-          <span class="material-symbols-rounded">more_horiz</span>
         </div>
-        <a class="items" *ngFor="let item of currentUser?.carrinho">
-          <p (click)="goItem(item)">Item: {{item}}</p>
-        </a>
+          <a class="items" *ngFor="let item of currentUser?.carrinho">
+            <p (click)="goItem(item)">Item: {{item}}</p>
+          </a>
       </div>
       <div class="users">
         <div class="top">
           <h4>Wishlist</h4>
-          <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.wishlist">
           <button class="removerButton"(click)="removerItem(item)" >X</button>
@@ -68,10 +61,11 @@
       <div class="following">
         <div class="top">
           <h4>Following</h4>
+          <br>
           <a class="items" *ngFor="let user of currentUser?.followingLists">
             <p >User: {{user}}</p>
           </a>
-          <span class="material-symbols-rounded">more_horiz</span>
+          
         </div>
 
       </div>
