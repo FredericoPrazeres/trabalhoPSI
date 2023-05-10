@@ -255,4 +255,7 @@ export class UserService {
       })
     );
   }
+  getItemPreco(item:string){
+    return this.http.get<number>(`${this.serverNodeUrl}/itemprice/${item}`,this.httpOptions);
+  }
 }
