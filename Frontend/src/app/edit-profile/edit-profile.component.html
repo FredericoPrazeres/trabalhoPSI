@@ -23,10 +23,10 @@
         <div class="form-group">
             <label>Ícones de perfil:</label>
             <div class="icons-display">
-                <img [src]="'assets/icons/icon1.png'" alt="" (click)="onIconSelected('icon1.png')" />
-                <img [src]="'assets/icons/icon2.png'" alt="" (click)="onIconSelected('icon2.png')" />
-                <img [src]="'assets/icons/icon3.png'" alt="" (click)="onIconSelected('icon3.png')" />
-                <img [src]="'assets/icons/icon4.png'" alt="" (click)="onIconSelected('icon4.png')" />
+                <img tabindex="0" [src]="'assets/icons/icon1.png'" [class.icon-selected]="selectedIcon === 'icon1.png'" alt="" (click)="onIconSelected('icon1.png')" (keyup.enter)="onIconSelected('icon1.png')" />
+                <img tabindex="0" [src]="'assets/icons/icon2.png'" [class.icon-selected]="selectedIcon === 'icon2.png'" alt="" (click)="onIconSelected('icon2.png')" (keyup.enter)="onIconSelected('icon2.png')" />
+                <img tabindex="0" [src]="'assets/icons/icon3.png'" [class.icon-selected]="selectedIcon === 'icon3.png'" alt="" (click)="onIconSelected('icon3.png')" (keyup.enter)="onIconSelected('icon3.png')" />
+                <img tabindex="0" [src]="'assets/icons/icon4.png'" [class.icon-selected]="selectedIcon === 'icon4.png'" alt="" (click)="onIconSelected('icon4.png')" (keyup.enter)="onIconSelected('icon4.png')" />
             </div>
 
             <button type="button" class="save-icon-changes-button" (click)="onIconSubmit()">
