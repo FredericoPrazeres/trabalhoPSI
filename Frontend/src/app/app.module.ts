@@ -15,6 +15,11 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { FollowersPageComponent } from './followers-page/followers-page.component';
 import { FollowingPageComponent } from './following-page/following-page.component';
 import { LibraryComponent } from './library/library.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
+
 
 @NgModule({
   declarations: [
@@ -30,12 +35,14 @@ import { LibraryComponent } from './library/library.component';
     FollowersPageComponent,
     FollowingPageComponent,
     LibraryComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,        
     AppRoutingModule, 
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

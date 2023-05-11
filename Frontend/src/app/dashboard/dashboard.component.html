@@ -47,13 +47,14 @@
     <div class="dashboard">
       <div class="users">
         <div class="top">
-          <h4>Carrinho</h4>
+          <h4>Carrinho <button class="checkOut"(click)="checkOut()" >CHECKOUT</button></h4>
           <span class="material-symbols-rounded">more_horiz</span>
         </div>
         <a class="items" *ngFor="let item of currentUser?.carrinho">
           <button (click)="goItem(item)">Item: {{item}}</button>
         </a>
       </div>
+
       <div class="users">
         <div class="top">
           <h4>Wishlist</h4>

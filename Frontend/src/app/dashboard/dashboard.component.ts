@@ -95,4 +95,7 @@ export class DashboardComponent implements OnInit {
   gotoUserProfile(name:string){
     this.userService.routeHere(`user/${name}`);
   }
+  checkOut(){
+    this.userService.routeHere('/checkout/' + this.currentUser?.name);
+  }
 }
