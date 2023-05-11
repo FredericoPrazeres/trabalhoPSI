@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { catchError } from 'rxjs';
 import { Item } from '../item';
-import { Router } from '@angular/router';
 import { ItemService } from '../item.service';
 
 @Component({
@@ -13,7 +11,8 @@ import { ItemService } from '../item.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  currentUser: User | undefined;
+  currentUser: User | null = null;
+  username: string | null = null;
   route: any;
 
   ufilter: string = '';
@@ -26,6 +25,7 @@ export class DashboardComponent implements OnInit {
     private itemService: ItemService
   ) {}
 
+
   ngOnInit(): void {
     this.itemService.getAllItems().subscribe((resd) => {
       if (resd) {
@@ -34,16 +34,24 @@ export class DashboardComponent implements OnInit {
     });
 
     this.userService
-      .getCurrentUser()
-      .pipe(
-        catchError((error: any) => {
-          this.userService.routeHere('/');
-          return [];
-        })
-      )
-      .subscribe((res: any) => {
-        this.currentUser = res;
-      });
+    .getCurrentUser()
+    .pipe(
+      catchError((error: any) => {
+        this.userService.routeHere('/');
+        return [];
+      })
+    )
+    .subscribe((res: any) => {
+      this.currentUser = res;
+    });
+  }
+
+  updateUsername(user: User | null): void {
+    if (user) {
+      this.username = user.name;
+    } else {
+      this.username = null;
+    }
   }
 
   logout() {
@@ -55,8 +63,7 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log(res.message);
-        this.currentUser = undefined;
+        this.username = null;
         this.userService.routeHere('/');
       });
   }
@@ -82,20 +89,30 @@ export class DashboardComponent implements OnInit {
   }
 
   goItem(name: string): void {
+    name = name.split("|")[0]
     this.userService.routeHere('/item/' + name);
   }
 
   wishlist() {
-    this.userService.routeHere('/wishlist/' + this.currentUser?.name);
+    this.userService.routeHere('/wishlist/' + this.username);
   }
-  removerItem(itemName:string){
-    this.currentUser!.wishlist= this.currentUser?.wishlist.filter(item=>item!==itemName)!;
+
+  removerItem(itemName: string) {
+    this.currentUser!.wishlist = this.currentUser?.wishlist.filter(
+      (item) => item !== itemName
+    )!;
     this.itemService.removeItemWishlist(itemName);
   }
-  gotoUserProfile(name:string){
+  gotoUserProfile(name: string) {
+    console.log(name);
     this.userService.routeHere(`user/${name}`);
   }
   checkOut(){
     this.userService.routeHere('/checkout/' + this.currentUser?.name);
+
+  }
+  openCarrinho(): void {
+    this.userService.routeHere(`carrinho`);
   }
 }
+

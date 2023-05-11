@@ -52,6 +52,15 @@ export class ItemService {
     );
   }
 
+  decItemToUserCart(item: string) {
+    const payload = { itemName: item };
+    return this.http.put(
+      `${this.serverNodeUrl}/user/cart/dec/` + item,
+      payload,
+      this.httpOptions
+    );
+  }
+
   addItemToUserWishlist(item: string) {
     const payload = { name: item }; 
     return this.http.put(
@@ -76,4 +85,17 @@ export class ItemService {
       return false;
     }
   }
+
+  updateItemRating(itemName: string, userName:string,rating:number,comment:string) {
+    const payload={ name: userName,rating: rating,comment: comment};
+
+    return this.http.put(
+      `${this.serverNodeUrl}/item/rating/` + itemName,
+      payload,
+      this.httpOptions
+    ).subscribe();
+
+    
+  }
+
 }

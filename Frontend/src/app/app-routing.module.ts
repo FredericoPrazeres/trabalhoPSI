@@ -9,10 +9,14 @@ import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { FollowersPageComponent } from './followers-page/followers-page.component';
 import { FollowingPageComponent } from './following-page/following-page.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { LibraryComponent } from './library/library.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { CarrinhoDetailComponent } from './carrinho-detail/carrinho-detail.component';
+
 
 const routes: Routes = [
+  
   { path: 'login-screen', component: LoginScreenComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '', redirectTo: '/login-screen', pathMatch: 'full' },
@@ -21,9 +25,11 @@ const routes: Routes = [
   { path: 'item/:name', component: ItemDetailComponent },
   { path: 'user-search', component: UserSearchComponent },
   { path: 'wishlist/:name', component: WishlistComponent },
-  { path: 'followers/:name',component:FollowersPageComponent },
-  { path: 'following/:name',component:FollowingPageComponent },
-  { path: 'library/:name',component:LibraryComponent},
+  { path: 'edit-profile/:user', component: EditProfileComponent },
+  { path: 'followers/:name', component: FollowersPageComponent },
+  { path: 'following/:name', component: FollowingPageComponent },
+  { path: 'library/:name', component: LibraryComponent },
+  { path: 'carrinho', component: CarrinhoDetailComponent },
   { path: 'checkout/:name',component:CheckoutComponent},
 ];
 

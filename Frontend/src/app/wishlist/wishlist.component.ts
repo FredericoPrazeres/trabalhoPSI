@@ -14,9 +14,10 @@ import { of } from 'rxjs';
   styleUrls: ['./wishlist.component.css'],
 })
 export class WishlistComponent implements OnInit {
-  items: Item[] = []; // A lista de itens da wishlist
+  items: string[] = []; // A lista de itens da wishlist
   itemName!: string;
   user: User | undefined;
+  message:string="";
   currentUser: User | undefined;
   item: Item | undefined;
 
@@ -29,7 +30,13 @@ export class WishlistComponent implements OnInit {
 
   ngOnInit(): void {
     const userName = this.route.snapshot.paramMap.get('name')!;
-    this.userService.getUser(userName).subscribe((res) => (this.user = res));
+    this.userService.getUser(userName).subscribe((res) => {
+      this.items = res.wishlist;
+      this.user = res;
+      if (res.wishlist.length===0){
+        this.message=`O ${this.user.name} não tem nenhum item na wishlist.`
+      }
+    });
     this.userService.existsUser(userName).subscribe((bool) => {
       if (!bool) {
         this.userService.routeHere('/dashboard');
@@ -50,7 +57,7 @@ export class WishlistComponent implements OnInit {
 
   loadItems() {
     this.wishlistService.getItems().subscribe((items) => {
-      this.items = items;
+      //this.items = items;
     });
   }
 
@@ -71,6 +78,10 @@ export class WishlistComponent implements OnInit {
     this.wishlistService.removeItem(itemId).subscribe(() => {
       this.loadItems();
     });
+  }
+
+  goToItem(name:string){
+    this.userService.routeHere(`item/${name}`);
   }
 
   dashboard() {

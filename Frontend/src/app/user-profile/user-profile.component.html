@@ -1,9 +1,6 @@
 <div *ngIf="user" class="profile">
     <div class="profile-header">
-        <img class="profile-picture" [src]="
-        user.profilePictureUrl ||
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-      " alt="" />
+        <img class="profile-picture" [src]="'assets/icons/' + user.profilePicture" alt="" />
         <div class="profile-container">
             <h1 class="profile-name">{{ user.name }}</h1>
             <button class="follow-button" *ngIf="!following" (click)="followUser()">Follow</button>
@@ -23,7 +20,9 @@
             <button (click)="goToFollowing()">Seguindo: {{user.followingLists.length}}</button>
         </div>
     </div>
-
+    <div class="editarButton">
+        <button (click)="editProfile()">Editar perfil</button>
+    </div>
     <div class="button">
         <button (click)="dashboard()">Dashboard</button>
     </div>

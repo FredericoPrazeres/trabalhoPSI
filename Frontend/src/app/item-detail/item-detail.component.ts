@@ -6,7 +6,8 @@ import { Item } from '../item';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-item-detail',
@@ -17,8 +18,10 @@ export class ItemDetailComponent implements OnInit {
   item: Item | undefined;
   name: String | undefined;
   user: User | undefined;
+  private apiUrl = '127.0.0.1:3058';
 
   constructor(
+    private http: HttpClient,
     private route: ActivatedRoute,
     private itemService: ItemService,
     private userService: UserService
@@ -49,22 +52,23 @@ export class ItemDetailComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.user = res;
+        if(!this.user?.carrinho) {
+          this.user!.carrinho = []; 
+        }
       });
   }
+  
   addItemToCart() {
-    if(this.user?.carrinho.includes(this.item?.name!)){
-      alert('Já possui este item no carrinho');
-      return;
-    }
+
     if (this.item === undefined) {
       return;
     } else {
-      this.user?.carrinho.push(this.item.name);
       this.itemService
         .addItemToUserCart(this.item.name)
         .pipe(
           tap(() => {
             alert('Sucesso');
+            this.ngOnInit();
           }),
           catchError((error) => {
             console.error('Erro ao adicionar item ao carrinho:', error);
@@ -77,13 +81,13 @@ export class ItemDetailComponent implements OnInit {
 
   addItemToWishlist() {
     if(this.user?.wishlist.includes(this.item?.name!)){
+      window.close();
       alert('Já possui este item na wishlist');
       return;
     }
     if (this.item === undefined) {
       return;
     } else {
-      this.user?.wishlist.push(this.item.name);
       this.itemService
         .addItemToUserWishlist(this.item.name)
         .pipe(
@@ -99,4 +103,63 @@ export class ItemDetailComponent implements OnInit {
         .subscribe();
     }
   }
+
+
+  showItemInfo(){
+    var itemInfo = document.getElementById("item-info");
+    if(!itemInfo){
+      return;
+    }
+
+			if (itemInfo.style.display === "none") {
+				itemInfo.style.display = "block";
+			} else {
+				itemInfo.style.display = "none";
+			}
+  }
+
+  closeItemInfo(){
+    var itemInfo = document.getElementById("item-info");
+    if(!itemInfo){
+      return;
+    }
+
+    if (itemInfo.style.display === "block") {
+      itemInfo.style.display = "none";
+    }
+
+  }
+  
+ submitItemInfo() {
+  var itemRating = (<HTMLInputElement>document.querySelector('input[name="item-rating"]:checked')).value;
+  var itemReview = (<HTMLInputElement>document.getElementById("item-review")).value;
+  var userName = this.user?.name;
+  
+  // User só pode classificar o item uma vez
+  if(this.item?.ratings){
+    for(var rating of this.item?.ratings){
+      if(rating.name===userName){
+        this.closeItemInfo();
+        alert("User already reviewed this item!");
+        return;
+      }
+  }
+  }
+
+  if (typeof userName ==="string"){
+    if(typeof this.item?.name ==="string"){
+      this.itemService.updateItemRating(this.item?.name,userName,parseInt(itemRating),itemReview);
+      const rat = {
+        name:userName,
+        rating: parseInt(itemRating),
+        comment:itemReview
+      }
+      this.item.ratings.push(rat);
+      alert("Obrigado pela sua classificação!");
+    }
+      
+  }
+  }
+
+
 }

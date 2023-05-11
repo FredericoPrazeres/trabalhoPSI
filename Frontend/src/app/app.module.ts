@@ -14,10 +14,13 @@ import { UserSearchComponent } from './user-search/user-search.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { FollowersPageComponent } from './followers-page/followers-page.component';
 import { FollowingPageComponent } from './following-page/following-page.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { LibraryComponent } from './library/library.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { CarrinhoDetailComponent } from './carrinho-detail/carrinho-detail.component';
 
 
 
@@ -34,15 +37,21 @@ import { ReactiveFormsModule } from '@angular/forms';
     WishlistComponent,
     FollowersPageComponent,
     FollowingPageComponent,
+    EditProfileComponent,
+    CarrinhoDetailComponent,
     LibraryComponent,
     CheckoutComponent,
+
+
   ],
   imports: [
-    BrowserModule,        
-    AppRoutingModule, 
+    BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

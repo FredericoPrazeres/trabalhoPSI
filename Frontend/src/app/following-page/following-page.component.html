@@ -1,5 +1,6 @@
 <h1>Lista de utilizadores que o {{name}} segue</h1>
 <div class="followers-container">
+    {{message}}
     <button (click)="goToUser(follow)" *ngFor="let follow of following">{{follow}}</button>
 </div>
 

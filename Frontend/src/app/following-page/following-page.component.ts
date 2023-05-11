@@ -10,6 +10,7 @@ import { UserService } from '../user.service';
 export class FollowingPageComponent implements OnInit {
   following:string[]=[];
   name:string="";
+  message:string="";
 
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +22,9 @@ export class FollowingPageComponent implements OnInit {
     this.name=userName;
     this.userService.getUser(userName).pipe().subscribe(res=>{
       this.following=res.followingLists;
+      if (res.followingLists.length===0){
+        this.message=`O ${this.name} não segue ninguém.`
+      }
     });
   }
   dashboard() {
