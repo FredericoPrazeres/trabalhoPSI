@@ -7,6 +7,7 @@ import { ItemService } from '../item.service';
 import { User } from '../user';
 import { Item } from '../item';
 
+
 @Component({
   selector: 'app-carrinho-detail',
   templateUrl: './carrinho-detail.component.html',
@@ -90,5 +91,9 @@ export class CarrinhoDetailComponent implements OnInit {
   }
   dashboard() {
     this.userService.routeHere('/dashboard');
+  }
+  checkoutPage(){
+    this.userService.routeHere('/checkout/' + this.currentUser?.name);
+
   }
 }
