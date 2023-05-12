@@ -258,4 +258,10 @@ export class UserService {
   getItemPreco(item:string){
     return this.http.get<number>(`${this.serverNodeUrl}/itemprice/${item}`,this.httpOptions);
   }
+
+  removeItems(itemList: string[]): Observable<any> {
+    console.log(itemList)
+    const url = `${this.serverNodeUrl}/user/cart`;
+    return this.http.delete(url,this.httpOptions);
+  }
 }

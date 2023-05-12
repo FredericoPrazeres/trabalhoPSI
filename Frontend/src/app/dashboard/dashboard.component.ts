@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
   }
 
   wishlist() {
-    this.userService.routeHere('/wishlist/' + this.username);
+    this.userService.routeHere('/wishlist/' + this.currentUser?.name);
   }
 
   removerItem(itemName: string) {

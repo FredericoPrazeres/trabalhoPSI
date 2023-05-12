@@ -209,6 +209,15 @@ app.put("/user/wishlist/:name", async(req, res) => {
         });
 });
 
+app.get('/user/wishlist', (req, res) => {
+    // Get the user's wishlist items from the session (replace this with your own logic)
+    const user = req.session.user; // Assuming you have user information stored in the session
+    const wishlistItems = user.wishlist; // Assuming the wishlist is stored in the 'wishlist' property of the user object
+  
+    // Return the wishlist items as a JSON response
+    res.json(wishlistItems);
+  });
+
 app.put("/user/cart/:name", async(req, res) => {
 
     var existingItem;
@@ -430,10 +439,8 @@ app.get("/itemprice/:name", async(req, res)=>{
         });
 });
 
-
 app.delete("/user/wishlist/:name", async(req, res) => {
     var existingItem;
-
     await Item.findOne({ name: req.params.name }).then((item) => {
         existingItem = item;
     });
@@ -441,9 +448,32 @@ app.delete("/user/wishlist/:name", async(req, res) => {
         return res.status(400).json({ error: "Item doesnt exist" });
     }
 
+    
+
     await User.findOne({ name: req.session.user.name })
         .then(async(user) => {
-            user.wishlist.pop(existingItem.name);
+            const index = user.wishlist.findIndex(item => item === existingItem.name);
+            if (index !== -1) {
+                user.wishlist.splice(index, 1);
+            }
+            await user.save();
+            req.session.user = user;
+            res.json();
+        })
+        .catch((err) => {
+            res.status(500).send(err.message);
+        });
+});
+
+app.delete("/user/cart", async(req, res) => {
+    var existingItems = req.session.user.carrinho;
+    const itemNames = existingItems.map(item => item.split("|")[0]);
+
+    
+    console.log(itemNames);
+    await User.findOne({ name: req.session.user.name })
+        .then(async(user) => {
+            user.carrinho = []
             await user.save();
             req.session.user = user;
             res.json();
@@ -513,28 +543,6 @@ app.put("/user/library/:name", async(req, res) => {
         });
 });
 
-app.put("/user/wishlist/:name", async(req, res) => {
-    var existingItem;
-
-    await Item.findOne({ name: req.params.name }).then((item) => {
-        existingItem = item;
-    });
-
-    if (existingItem === null) {
-        return res.status(400).json({ error: "Item doesnt exist" });
-    }
-
-    await User.findOne({ name: req.session.user.name })
-        .then(async(user) => {
-            user.wishlist.push(existingItem.name);
-            await user.save();
-            req.session.user = user;
-            res.json();
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        });
-});
 
 app.get("/user/:name", async(req, res) => {
     await User.findOne({ name: req.params.name })

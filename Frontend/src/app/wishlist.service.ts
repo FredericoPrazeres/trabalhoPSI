@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Item } from './item';
 import { Observable } from 'rxjs';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -15,9 +14,9 @@ export class WishlistService {
 
   constructor(private http: HttpClient) {}
 
-  getItems(): Observable<Item[]> {
-    const url = `${this.serverNodeUrl}/wishlist/`;
-    return this.http.get<Item[]>(url,this.httpOptions);
+  getItems(): Observable<string[]> {
+    const url = `${this.serverNodeUrl}/user/wishlist/`;
+    return this.http.get<string[]>(url,this.httpOptions);
   }
 
   addItem(itemName: string): Observable<any> {
@@ -26,7 +25,8 @@ export class WishlistService {
   }
 
   removeItem(itemId: string): Observable<any> {
-    const url = `${this.serverNodeUrl}/wishlist/${itemId}`;
+    const url = `${this.serverNodeUrl}/user/wishlist/${itemId}`;
     return this.http.delete(url,this.httpOptions);
   }
+
 }

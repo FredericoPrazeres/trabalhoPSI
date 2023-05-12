@@ -108,24 +108,20 @@ export class CheckoutComponent {
 
   }
   removeItemsWishlist() {
-    this.wishlistService.getItems().subscribe(
-      (items: any[]) => {
-        items.forEach(item => {
-          this.wishlistService.removeItem(item.id).subscribe(
-            response => {
-              console.log(`Item ${item.id} removido com sucesso`);
-            },
-            error => {
-              console.log(`Erro ao remover item ${item.id}:`, error);
-            }
-          );
-        });
-        console.log('Todos os itens removidos com sucesso');
-      },
-      (error: any) => {
-        console.log('Erro ao obter itens', error);
-      }
-    );
+    
+
+    this.userService.removeItems(this.currentUser!.carrinho).subscribe(res => {this.currentUser!.carrinho = [];} 
+    
+        
+      ),
+      catchError((error: any) => {
+        throw error;
+
+      });
+    
+      
+
+  
   }
 }
 
