@@ -36,7 +36,7 @@ export class UserService {
     private domSanitizer: DomSanitizer
   ) {}
 
-  private serverNodeUrl = 'http://localhost:3058';
+  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,

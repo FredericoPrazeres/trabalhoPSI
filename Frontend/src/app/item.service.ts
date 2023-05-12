@@ -3,14 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EMPTY, Observable, catchError, take } from 'rxjs';
 import { Router } from '@angular/router';
 import { Item } from './item';
-import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ItemService {
   constructor(private http: HttpClient, private router: Router) {}
-  private serverNodeUrl = 'http://localhost:3058';
+  private serverNodeUrl = 'http://appserver.alunos.di.fc.ul.pt:3058';
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
