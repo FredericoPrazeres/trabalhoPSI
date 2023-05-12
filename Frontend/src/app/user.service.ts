@@ -260,7 +260,6 @@ export class UserService {
   }
 
   removeItems(itemList: string[]): Observable<any> {
-    console.log(itemList)
     const url = `${this.serverNodeUrl}/user/cart`;
     return this.http.delete(url,this.httpOptions);
   }

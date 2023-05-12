@@ -50,6 +50,9 @@ export class CarrinhoDetailComponent implements OnInit {
   }
 
   initPreco(carrinho:string[]){
+    if(carrinho.length===0){
+      this.message=`Não existe items no carrinho do ${this.currentUser?.name}.`;
+    }
     for(let item of carrinho){
       let itemName = item.split("|")[0];
       let itemQuantity = parseInt(item.split("|")[1]);

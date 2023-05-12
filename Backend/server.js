@@ -7,8 +7,6 @@ const Item = require("./item.model");
 var app = express();
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
-const path = require("path");
-const fs = require("fs");
 
 app.use(cors({ origin: ["http://localhost:3008"], credentials: true }));
 
@@ -86,17 +84,6 @@ app.post("/follow/:name", async(req, res) => {
         res.status(500).send(err.message);
     }
 });
-
-app.get("/followers/:name", async(req, res) => {
-    const user = await User.findOne({ name: req.params.name });
-
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    const followers = user.followerLists;
-    return res.status(200).json({ followers: followers });
-});
 app.get("/following/:name", async(req, res) => {
     const user = await User.findOne({ name: req.params.name });
 
@@ -106,50 +93,6 @@ app.get("/following/:name", async(req, res) => {
 
     const following = user.followingLists;
     return res.status(200).json({ following: following });
-});
-
-app.post("/unfollow/:name", async(req, res) => {
-    try {
-        const targetUserName = req.params.name;
-        const sessionUserName = req.body.name;
-
-        const currentUser = await User.findOne({ name: sessionUserName });
-        const targetUser = await User.findOne({ name: targetUserName });
-
-        if (!targetUser) {
-            return res.status(404).json("User not found");
-        }
-
-        targetUser.followerLists = targetUser.followerLists.filter(
-            (follower) => follower !== currentUser.name
-        );
-        currentUser.followingLists = currentUser.followingLists.filter(
-            (following) => following !== targetUser.name
-        );
-
-        await targetUser.save();
-        await currentUser.save();
-
-        req.session.user = currentUser;
-
-        res.json("Unfollowed successfully");
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-app.get("/item/:name", async(req, res) => {
-    await Item.findOne({ name: req.params.name })
-        .then((item) => {
-            if (item) {
-                res.json(item);
-            } else {
-                res.status(404).send("No item found with that name");
-            }
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        });
 });
 
 app.get("/items", async(req, res) => {
@@ -210,11 +153,9 @@ app.put("/user/wishlist/:name", async(req, res) => {
 });
 
 app.get('/user/wishlist', (req, res) => {
-    // Get the user's wishlist items from the session (replace this with your own logic)
-    const user = req.session.user; // Assuming you have user information stored in the session
-    const wishlistItems = user.wishlist; // Assuming the wishlist is stored in the 'wishlist' property of the user object
+    const user = req.session.user; 
+    const wishlistItems = user.wishlist; 
   
-    // Return the wishlist items as a JSON response
     res.json(wishlistItems);
   });
 
@@ -291,21 +232,6 @@ app.put("/user/cart/dec/:name", async(req, res) => {
         });
 });
 
-app.get("/user/:name", async(req, res) => {
-    await User.findOne({ name: req.params.name })
-        .select("-_id -__v -password")
-        .then((user) => {
-            if (user) {
-                res.json(user);
-            } else {
-                res.status(404).send("No user found with that name");
-            }
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        });
-});
-
 app.post("/users", async(req, res) => {
     const existingUser = await User.findOne({ name: req.body.name });
     if (existingUser) {
@@ -328,32 +254,11 @@ app.post("/users", async(req, res) => {
         });
 });
 
-app.post("/login", validatePayloadMiddleware, async(req, res) => {
-    const { name, password } = req.body;
-    await User.findOne({ name, password })
-        .select("-_id -__v -password")
-        .then((user) => {
-            if (user) {
-                req.session.user = user;
-                res.send(req.session.user);
-            } else {
-                res
-                    .status(401)
-                    .send({ errorMessage: "Username ou password inválidos" });
-            }
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        });
-});
-
 app.get("/login", async(req, res) => {
     try {
         if (req.session.user) {
-            // If there is a user in the session, return it
             res.status(200).send(req.session.user);
         } else {
-            // If there is no user in the session, return a 401 error
             res.status(401).send({ errorMessage: "User not logged in" });
         }
     } catch (err) {
@@ -371,17 +276,6 @@ app.get("/followers/:name", async(req, res) => {
     const followers = user.followerLists;
     return res.status(200).json({ followers: followers });
 });
-app.get("/following/:name", async(req, res) => {
-    const user = await User.findOne({ name: req.params.name });
-
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    const following = user.followingLists;
-    return res.status(200).json({ following: following });
-});
-
 app.post("/unfollow/:name", async(req, res) => {
     try {
         const targetUserName = req.params.name;
@@ -468,12 +362,10 @@ app.delete("/user/wishlist/:name", async(req, res) => {
 app.delete("/user/cart", async(req, res) => {
     var existingItems = req.session.user.carrinho;
     const itemNames = existingItems.map(item => item.split("|")[0]);
-
-    
-    console.log(itemNames);
     await User.findOne({ name: req.session.user.name })
         .then(async(user) => {
             user.carrinho = []
+            user.wishlist= user.wishlist.filter(item => !itemNames.includes(item));
             await user.save();
             req.session.user = user;
             res.json();
@@ -508,42 +400,6 @@ app.post("/items", async(req, res) => {
             res.status(500).json({ error: error });
         });
 });
-
-app.get("/items", async(req, res) => {
-    await Item.find({})
-        .select("-_id -__v")
-        .then((items) => {
-            res.json(items);
-        })
-        .catch((err) => {
-            console.log("err");
-            res.status(500).json({ error: err });
-        });
-});
-
-app.put("/user/library/:name", async(req, res) => {
-    var existingItem;
-
-    await Item.findOne({ name: req.body.name }).then((item) => {
-        existingItem = item;
-    });
-    if (existingItem === null) {
-        return res.status(400).json({ error: "Item doesnt exist" });
-    }
-
-    await User.findOne({ name: req.params.name })
-        .then(async(user) => {
-            user.library.push(existingItem.name);
-            await user.save();
-            req.session.user = user;
-            res.json();
-        })
-        .catch((err) => {
-            res.status(500).send(err.message);
-        });
-});
-
-
 app.get("/user/:name", async(req, res) => {
     await User.findOne({ name: req.params.name })
         .select("-_id -__v -password")
@@ -556,28 +412,6 @@ app.get("/user/:name", async(req, res) => {
         })
         .catch((err) => {
             res.status(500).send(err.message);
-        });
-});
-
-app.post("/users", async(req, res) => {
-    const existingUser = await User.findOne({ name: req.body.name });
-    if (existingUser) {
-        return res.status(400).json({ error: "User already exists" });
-    }
-
-    const newUser = new User({
-        name: req.body.name,
-        password: req.body.password,
-    });
-
-    await newUser
-        .save()
-        .then((user) => {
-            res.json(user);
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(500).json({ error: error });
         });
 });
 
@@ -598,20 +432,6 @@ app.post("/login", validatePayloadMiddleware, async(req, res) => {
         .catch((err) => {
             res.status(500).send(err.message);
         });
-});
-
-app.get("/login", async(req, res) => {
-    try {
-        if (req.session.user) {
-            // If there is a user in the session, return it
-            res.status(200).send(req.session.user);
-        } else {
-            // If there is no user in the session, return a 401 error
-            res.status(401).send({ errorMessage: "User not logged in" });
-        }
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
 });
 
 app.get("/logout", async(req, res) => {

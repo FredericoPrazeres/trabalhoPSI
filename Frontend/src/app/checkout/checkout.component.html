@@ -3,17 +3,15 @@
 
 <h1>Por favor insira os seguintes dados:</h1>
 
-<form [formGroup]="checkoutForm">
   <div>
     <label>Morada:</label>
-    <input type="text" formControlName="address" required>
+    <input type="text" required>
   </div>
   <div>
     <label>NIF:</label>
-    <input type="text" formControlName="nif" required>
+    <input type="text" required>
     <div *ngIf="checkoutForm.get('nif')?.invalid">O NIF é obrigatório.</div>
   </div>
-</form>
 
 <div class="payment-dialog" #paymentDialog>
   <p>Selecione o método de pagamento:<p>
@@ -36,7 +34,7 @@
   </div>
   <div>
     <label>Validade:</label>
-    <input type="text" id="expiration-date" formControlName="expirationDate">
+    <input type="text" id="expiration-date">
     </div>
   <div>
     <label>CCV:</label>
