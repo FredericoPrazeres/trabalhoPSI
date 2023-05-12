@@ -20,7 +20,7 @@
             <button (click)="goToFollowing()">Seguindo: {{user.followingLists.length}}</button>
         </div>
     </div>
-    <div class="editarButton">
+    <div *ngIf="this.currentUser?.name==this.user?.name" class="editarButton">
         <button (click)="editProfile()">Editar perfil</button>
     </div>
     <div class="button">

@@ -365,6 +365,12 @@ app.delete("/user/cart", async(req, res) => {
     await User.findOne({ name: req.session.user.name })
         .then(async(user) => {
             user.carrinho = []
+            for(let item of itemNames){
+                if(!user.library.includes(item)){
+                    console.log(item);
+                    user.library.push(item);
+                }
+            }
             user.wishlist= user.wishlist.filter(item => !itemNames.includes(item));
             await user.save();
             req.session.user = user;
