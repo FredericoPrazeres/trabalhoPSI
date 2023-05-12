@@ -430,6 +430,7 @@ app.get("/itemprice/:name", async(req, res)=>{
         });
 });
 
+
 app.delete("/user/wishlist/:name", async(req, res) => {
     var existingItem;
 

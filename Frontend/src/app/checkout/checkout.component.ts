@@ -1,7 +1,12 @@
-import { Component, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
-
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserService } from '../user.service';
+import { WishlistService } from '../wishlist.service';
+import { ActivatedRoute } from '@angular/router';
+import { User } from '../user';
+import { ItemService } from '../item.service';
+import { Item } from '../item';
+import { catchError } from 'rxjs';
 
 
 @Component({
@@ -10,18 +15,59 @@ import { UserService } from '../user.service';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent {
+  isclicked = false;
   isSuccessful = false;
   elementRef: any;
+  checkoutForm: FormGroup;
+  user: User | undefined;
+  currentUser: User | undefined;
+  item: Item | undefined;
+  itemsWish: string[] = []; // A lista de itens da wishlist
+  itemsCarrinho: Item[] = [];
 
-
-  constructor(private fb: FormBuilder, private userService: UserService) {
-    this.checkoutForm = this.fb.group({
+  constructor(private fb: FormBuilder,
+              private userService: UserService,
+              private wishlistService: WishlistService,
+              private route: ActivatedRoute,
+              private itemService: ItemService) {
+  
+      this.checkoutForm = this.fb.group({
       address: ['', Validators.required],
       nif: ['', Validators.required],
     });
     
   }
-  checkoutForm: FormGroup;
+
+  ngOnInit(): void {
+    const userName = this.route.snapshot.paramMap.get('name')!;
+    this.userService.getUser(userName).subscribe((res) => {
+      this.itemsWish = res.wishlist;
+      this.user = res;
+    });
+    this.userService.existsUser(userName).subscribe((bool) => {
+      if (!bool) {
+        this.userService.routeHere('/dashboard');
+      }
+    });
+    this.userService
+      .getCurrentUser()
+      .pipe(
+        catchError((error: any) => {
+          this.userService.routeHere('/');
+          return [];
+        })
+      )
+      .subscribe((res: any) => {
+        this.currentUser = res;
+      });
+      this.itemService.getAllItems().subscribe((resd) => {
+        if (resd) {
+          this.itemsCarrinho = resd;
+        }
+      });
+
+  }
+  
 
 
   openMbway() {
@@ -35,6 +81,7 @@ export class CheckoutComponent {
   }
   
   openCredit() {
+    
     const mbwayForm = document.getElementById("mbway-form");
     const creditForm = document.getElementById("credit-form");
     
@@ -45,18 +92,40 @@ export class CheckoutComponent {
   }
 
   checkout(): void {
+    this.isclicked = true;
     const randomNumber = Math.random();
 
     if (randomNumber < 0.5) {
       this.isSuccessful = true;
-      console.log('Compra bem-sucedida!');
+      this.removeItemsWishlist();
     } else {
       this.isSuccessful = false;
-      console.log('Compra falhou.');
     }
   }
 
   dashboard(){
     this.userService.routeHere('/dashboard');
+
+  }
+  removeItemsWishlist() {
+    this.wishlistService.getItems().subscribe(
+      (items: any[]) => {
+        items.forEach(item => {
+          this.wishlistService.removeItem(item.id).subscribe(
+            response => {
+              console.log(`Item ${item.id} removido com sucesso`);
+            },
+            error => {
+              console.log(`Erro ao remover item ${item.id}:`, error);
+            }
+          );
+        });
+        console.log('Todos os itens removidos com sucesso');
+      },
+      (error: any) => {
+        console.log('Erro ao obter itens', error);
+      }
+    );
   }
 }
+

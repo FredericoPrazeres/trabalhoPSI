@@ -19,6 +19,7 @@ export class CarrinhoDetailComponent implements OnInit {
   total:number=0;
   items: Item[] = [];
   message:string="";
+  static getTotal: any;
 
   constructor(
     private userService: UserService,
@@ -96,4 +97,6 @@ export class CarrinhoDetailComponent implements OnInit {
     this.userService.routeHere('/checkout/' + this.currentUser?.name);
 
   }
-}
+    
+  }
+

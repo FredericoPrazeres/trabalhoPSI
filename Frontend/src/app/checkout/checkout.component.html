@@ -1,3 +1,6 @@
+
+
+
 <h1>Por favor insira os seguintes dados:</h1>
 
 <form [formGroup]="checkoutForm">
@@ -13,7 +16,7 @@
 </form>
 
 <div class="payment-dialog" #paymentDialog>
-  <h1>Selecione o método de pagamento</h1>
+  <p>Selecione o método de pagamento:<p>
   <button (click)="openMbway()">MBWay</button>
   <button (click)="openCredit()">Cartao de credito</button>
 </div>
@@ -43,9 +46,10 @@
 
 <button (click)="checkout()">Finalizar Compra</button>
 
+<div *ngIf="isclicked">
 <div *ngIf="isSuccessful">Compra bem-sucedida!</div>
 <div *ngIf="!isSuccessful">Compra falhou.</div>
-
+</div>
 
 <div class="button">
   <button (click)="dashboard()">Dashboard</button>
