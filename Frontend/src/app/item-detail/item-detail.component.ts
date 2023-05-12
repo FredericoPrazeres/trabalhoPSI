@@ -92,8 +92,8 @@ export class ItemDetailComponent implements OnInit {
         .addItemToUserWishlist(this.item.name)
         .pipe(
           tap(() => {
-            confirm("Sucesso");
-           
+            this.user?.wishlist.push(this.item!.name);
+            confirm("Sucesso");         
           }),
           catchError((error) => {
             console.error('Erro ao adicionar item ao carrinho:', error);
